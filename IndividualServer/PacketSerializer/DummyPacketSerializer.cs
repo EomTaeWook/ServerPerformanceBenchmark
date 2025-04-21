@@ -13,12 +13,13 @@ namespace IndividualServer.PacketSerializer
 
         public bool IsCompletePacketInBuffer(ArrayQueue<byte> buffer)
         {
-            return true;
+            return buffer.CanRead;
         }
 
         public void Deserialize(ArrayQueue<byte> buffer)
         {
-            _session.Send([.. buffer]);
+            var bytes = buffer.Read(buffer.Count);
+            _session.Send(bytes);
         }
 
         public void SetSession(ISession session)

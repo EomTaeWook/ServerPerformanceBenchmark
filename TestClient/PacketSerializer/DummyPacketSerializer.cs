@@ -27,6 +27,10 @@ namespace TestClient.PacketSerializer
             _sw.Stop();
             LogHelper.Info($"RTT : {_sw.ElapsedMilliseconds}");
             _sw.Restart();
+            if (_session == null)
+            {
+                return;
+            }
             _session.Send(bytes);
         }
 

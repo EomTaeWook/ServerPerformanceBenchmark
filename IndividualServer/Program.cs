@@ -9,14 +9,10 @@ internal class Program
     {
         Console.WriteLine("Starting Echo Server...");
 
-        var server = new Server(new SessionConfiguration(SerializerFactory, new SocketOption()
-        {
-            BufferSize = 4096,
-            KeepAlive = false,
-        }));
+        var server = new Server(new SessionConfiguration(SerializerFactory));
 
-        server.Start(6000, 1000);
-        Console.WriteLine("Echo Server started on port 6000.");
+        server.Start(5000);
+        Console.WriteLine("Echo Server started on port 5000.");
 
         Console.ReadLine();
     }

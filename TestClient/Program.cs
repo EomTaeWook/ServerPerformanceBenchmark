@@ -11,7 +11,7 @@ internal class Program
     private static void Main(string[] args)
     {
         LogBuilder.Configuration(LogConfigXmlReader.Load("DignusLog.config")).Build();
-        RunClients(1000);
+        RunClients();
     }
     static void RunClients(int clientCount = 1000)
     {
@@ -21,7 +21,7 @@ internal class Program
             try
             {
                 var client = new SocketClient(new SessionConfiguration(SerializerFactory));
-                client.Connect("127.0.0.1", 6000);
+                client.Connect("127.0.0.1", 5000);
                 clients.Add(client);
             }
             catch (Exception ex)
@@ -31,9 +31,13 @@ internal class Program
 
         });
         Console.WriteLine($"{clients.Count} clients connected successfully.");
-        Thread.Sleep(10000);
+        Thread.Sleep(5000);
         foreach (var client in clients)
         {
+            if (client == null)
+            {
+                return;
+            }
             client.Close();
         }
     }
