@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Dignus">
+      <HintPath>..\Dll\Dignus.dll</HintPath>
+    </Reference>
+    <Reference Include="Dignus.Extensions">
+      <HintPath>..\Dll\Dignus.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Dignus.Sockets">
+      <HintPath>..\Dll\Dignus.Sockets.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DignusLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

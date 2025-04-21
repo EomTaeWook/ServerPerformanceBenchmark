@@ -1,0 +1,9 @@
+DotNettyServer/.vs/
+DotNettyServer/bin/
+DotNettyServer/obj/
+IndividualServer/.vs/
+IndividualServer/obj/
+IndividualServer/bin/
+TestClient/.vs/
+TestClient/bin/
+TestClient/obj/
