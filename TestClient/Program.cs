@@ -3,6 +3,7 @@ using Dignus.Extensions.Log;
 using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using System.Collections.Concurrent;
 using TestClient;
 using TestClient.PacketSerializer;
 
@@ -15,7 +16,7 @@ internal class Program
     }
     static void RunClients(int clientCount = 1000)
     {
-        var clients = new List<SocketClient>();
+        var clients = new ConcurrentBag<SocketClient>();
         Parallel.For(0, clientCount, (i) =>
         {
             try
