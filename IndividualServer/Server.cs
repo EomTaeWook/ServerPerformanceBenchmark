@@ -11,7 +11,7 @@ namespace IndividualServer
 
         protected override void OnAccepted(ISession session)
         {
-            Console.WriteLine($"accepted : {session.Id}");
+            
         }
 
         protected override void OnDisconnected(ISession session)

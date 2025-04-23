@@ -12,8 +12,8 @@ namespace TestClient
 
         protected override void OnConnected(ISession session)
         {
-            var bytes = Encoding.UTF8.GetBytes("ping");
-            session.Send(bytes);
+            //var bytes = Encoding.UTF8.GetBytes("ping");
+            //session.Send(bytes);
         }
 
         protected override void OnDisconnected(ISession session)

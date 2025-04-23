@@ -7,3 +7,8 @@ IndividualServer/bin/
 TestClient/.vs/
 TestClient/bin/
 TestClient/obj/
+SuperSocket/bin/Release/*
+SuperSocket/obj
+**/bin/*
+**/.vs
+**/obj/*
