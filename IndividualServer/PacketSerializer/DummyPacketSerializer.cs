@@ -5,7 +5,7 @@ namespace IndividualServer.PacketSerializer
 {
     internal class DummyPacketSerializer : IPacketSerializer, IPacketDeserializer, ISessionComponent
     {
-        ISession _session;
+        private ISession _session;
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
             return null;

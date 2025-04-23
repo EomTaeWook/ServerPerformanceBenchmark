@@ -1,8 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Dignus.Extensions.Log;
+﻿using Dignus.Extensions.Log;
 using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using System.Collections.Concurrent;
 using TestClient;
 using TestClient.PacketSerializer;
 
@@ -12,34 +12,64 @@ internal class Program
     {
         LogBuilder.Configuration(LogConfigXmlReader.Load("DignusLog.config")).Build();
         RunClients();
+        //RunConnectClients();
     }
-    static void RunClients(int clientCount = 1000)
+    static void RunConnectClients(int clientCount = 1000)
     {
-        var clients = new List<SocketClient>();
-        Parallel.For(0, clientCount, (i) =>
+        var clients = new ConcurrentBag<SocketClient>();
+        var result = Parallel.For(0, clientCount, (i) =>
         {
             try
             {
                 var client = new SocketClient(new SessionConfiguration(SerializerFactory));
-                client.Connect("127.0.0.1", 5000);
                 clients.Add(client);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
             }
-
         });
+
         Console.WriteLine($"{clients.Count} clients connected successfully.");
-        Thread.Sleep(5000);
-        foreach (var client in clients)
+        Task.Delay(1000).GetAwaiter().GetResult();
+
+        for(; ; )
         {
-            if (client == null)
+            Parallel.ForEach(clients, (client) =>
             {
-                return;
-            }
-            client.Close();
+                client.Connect("127.0.0.1", 5000);
+            });
+
+            Parallel.ForEach(clients, (client) =>
+            {
+                client.Close();
+            });
         }
+    }
+    static void RunClients(int clientCount = 1000)
+    {
+        var clients = new ConcurrentBag<SocketClient>();
+        var result = Parallel.For(0, clientCount, (i) =>
+        {
+            try
+            {
+                var client = new SocketClient(new SessionConfiguration(SerializerFactory));
+                clients.Add(client);
+                client.Connect("127.0.0.1", 5000, 2000);
+            }
+            catch (Exception ex)    
+            {
+                Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
+            }
+        });
+
+        Console.WriteLine($"{clients.Count} clients connected successfully.");
+        Task.Delay(7000).GetAwaiter().GetResult();
+
+        Parallel.ForEach(clients, (client) =>
+        {
+            client.Close();
+        });
     }
     static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> SerializerFactory()
     {
