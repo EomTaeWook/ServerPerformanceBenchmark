@@ -11,13 +11,42 @@ internal class Program
     private static void Main(string[] args)
     {
         LogBuilder.Configuration(LogConfigXmlReader.Load("DignusLog.config")).Build();
-        RunClients();
-        //RunConnectClients();
+        RunConnectClients();
     }
     static void RunConnectClients(int clientCount = 1000)
     {
         var clients = new ConcurrentBag<SocketClient>();
-        var result = Parallel.For(0, clientCount, (i) =>
+        Parallel.For(0, clientCount, (i) =>
+        {
+            try
+            {
+                var client = new SocketClient(new SessionConfiguration(SerializerFactory));
+                clients.Add(client);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
+            }
+        });
+
+        for (int i = 0; i < 100; ++i)
+        {
+            Parallel.ForEach(clients, (client) =>
+            {
+                client.Connect("127.0.0.1", 5000);
+            });
+            Thread.Sleep(1000);
+
+            Parallel.ForEach(clients, (client) =>
+            {
+                client.Close();
+            });
+        }
+    }
+    {
+        var clients = new ConcurrentBag<SocketClient>();
+    static void RunConnectClients(int clientCount = 1000)
+        Parallel.For(0, clientCount, (i) =>
         {
             try
             {
