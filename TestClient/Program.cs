@@ -1,5 +1,4 @@
-﻿using Dignus.Extensions.Log;
-using Dignus.Log;
+﻿using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using System.Collections.Concurrent;
@@ -11,7 +10,7 @@ internal class Program
     private static void Main(string[] args)
     {
         LogBuilder.Configuration(LogConfigXmlReader.Load("DignusLog.config")).Build();
-        RunConnectClients(10000);
+        RunClients(1);
     }
     static void RunConnectClients(int clientCount = 1000)
     {
@@ -29,7 +28,7 @@ internal class Program
                 Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
             }
         });
-        
+
         for (int i = 0; i < 5; ++i)
         {
             Parallel.ForEach(clients, (client) =>
@@ -38,11 +37,11 @@ internal class Program
                 {
                     client.Connect("127.0.0.1", 5000);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Interlocked.Increment(ref failedCount);
                 }
-                
+
             });
 
             Parallel.ForEach(clients, (client) =>
@@ -68,7 +67,7 @@ internal class Program
                 clients.Add(client);
                 client.Connect("127.0.0.1", 5000, 2000);
             }
-            catch (Exception ex)    
+            catch (Exception ex)
             {
                 Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
             }
