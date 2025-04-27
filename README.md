@@ -1,23 +1,24 @@
 # 📈 DignusSocketServer Benchmark
-Server address: 127.0.0.1
-Server port: 1111
-Working threads: 1
-Working clients: 1
-Working messages: 1000
-Message size: 32
-Seconds to benchmarking: 10
+- Server address: 127.0.0.1
+- Server port: 5000
+- Working clients: 1
+- Working messages: 1000
+- Message size: 32
+- Seconds to benchmarking: 10
 
-Errors: 0
+- Errors: 0
 
-Total time: 10.001 s
-Total data: 1.17 GiB
-Total messages: 39,107,244
-Data throughput: 119.3 MiB/s
-Message throughput: 3,910,724 msg/s
+- Total time: 10.001 s
+- Total data: 1.17 GiB
+- Total messages: 39,107,244
+- Data throughput: 119.3 MiB/s
+- Message throughput: 3,910,724 msg/s
+
+---
 
 ![TopPerformance](Image/Dignus_TopPerformance_39107244msg_1251MB.png)
 
-
+---
 
 # 서버별 성능 비교 (2024-04-27)
 
