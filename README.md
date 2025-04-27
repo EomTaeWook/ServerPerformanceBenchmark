@@ -116,7 +116,9 @@
 | Item | DignusSocketServer (Cold) | DignusSocketServer (Warm-up) | DotNetty (Cold) | DotNetty (Warm-up) | SuperSocket 2.0 (Cold) | SuperSocket 2.0 (Warm-up) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 5,674,121 |
+| Total Received | 5,674,121 | 6,378,411 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
+| Max RTT (ms) | 136.74 | 80.50 | 140.65 | 136.36 | 128.70 | 146.61 |
+| Min RTT (ms) | 0.03 | 0.02 | 0.04 | 0.04 | 0.05 | 0.05 |
 
 # 🖼️ Test Result Captures (Cold Start)
 
