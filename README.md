@@ -9,14 +9,14 @@
 - Errors: 0
 
 - Total time: 10.001 s
-- Total data: 1.17 GiB
-- Total messages: 39,107,244
-- Data throughput: 119.3 MiB/s
-- Message throughput: 3,910,724 msg/s
+- Total data: 1.225 GiB
+- Total messages: 41,108,797
+- Data throughput: 125.4 MiB/s
+- Message throughput: 4,110,371 msg/s
 
 ---
 
-![TopPerformance](Image/Dignus_TopPerformance_39107244msg_1251MB.png)
+![TopPerformance](Image/Dignus_Performance_41108797msg_1225MiB.png)
 
 ---
 

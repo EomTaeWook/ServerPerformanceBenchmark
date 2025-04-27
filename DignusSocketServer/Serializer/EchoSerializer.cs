@@ -4,20 +4,8 @@ using DignusEchoServer.Packets;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class EchoSerializer() : IPacketDeserializer, IPacketSerializer, ISessionComponent
+    internal class EchoSerializer() : IPacketProcessor, IPacketSerializer
     {
-        private ISession _session;
-        private const int SizeToInt = sizeof(int);
-        public void Deserialize(in ArraySegment<byte> packet)
-        {
-            _session.Send(packet.Array);
-        }
-
-        public void Dispose()
-        {
-            _session = null;
-        }
-
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
             if (packet is Packet sendPacket == false)
@@ -26,12 +14,6 @@ namespace DignusEchoServer.Serializer
             }
             return sendPacket.Body;
         }
-
-        public void SetSession(ISession session)
-        {
-            _session = session;
-        }
-
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
         {
             packet = null;
@@ -41,6 +23,11 @@ namespace DignusEchoServer.Serializer
             }
             packet = bytes;
             return true;
+        }
+
+        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
+        {
+            session.Send(packet.Array);
         }
     }
 }

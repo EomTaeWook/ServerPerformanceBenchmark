@@ -29,6 +29,7 @@ namespace SuperSocketServer.Filter
             {
                 return default;
             }
+
             return new PacketInfo()
             {
                 Body = body,

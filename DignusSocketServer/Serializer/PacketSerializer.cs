@@ -7,10 +7,11 @@ using System.Text;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class PacketSerializer(EchoHandler echoHandler) : IPacketDeserializer, IPacketSerializer
+    internal class PacketSerializer(EchoHandler echoHandler) : IPacketProcessor, IPacketSerializer
     {
         private const int SizeToInt = sizeof(int);
-        public void Deserialize(in ArraySegment<byte> packet)
+
+        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             var protocol = BitConverter.ToInt32(packet.Array, 0);
 
@@ -39,7 +40,6 @@ namespace DignusEchoServer.Serializer
 
             return buffer;
         }
-
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
         {
             packet = null;

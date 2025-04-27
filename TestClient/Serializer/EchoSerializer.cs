@@ -4,10 +4,8 @@ using EchoClient.Packets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoSerializer() : IPacketDeserializer, IPacketSerializer, ISessionComponent
+    internal class EchoSerializer() : IPacketProcessor, IPacketSerializer, ISessionComponent
     {
-        private ISession _session;
-
         private long _receivedCount;
         private long _totalBytes = 0;
         private double _maxRttMs = -1;
@@ -15,32 +13,18 @@ namespace EchoClient.Serializer
         private DateTime _lastSendTime = DateTime.MinValue;
 
         private int _receivedSize = 0;
-
-        public void Deserialize(in ArraySegment<byte> packet)
+        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             _receivedSize += packet.Count;
-
             while (_receivedSize >= Program.Message.Length)
             {
-                Task.Run(() =>
+                Task.Factory.StartNew(() =>
                 {
-                    _session.Send(Program.Message);
-                });
-
+                    session.Send(Program.Message);
+                }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
                 _receivedSize -= Program.Message.Length;
             }
             Interlocked.Add(ref _totalBytes, packet.Count);
-            //var rtt = (DateTime.UtcNow - _lastSendTime).TotalMilliseconds;
-            //if (rtt > _maxRttMs)
-            //    _maxRttMs = rtt;
-            //if (rtt < _minRttMs)
-            //    _minRttMs = rtt;
-            _lastSendTime = DateTime.UtcNow;
-        }
-        public void SendMessage(in ArraySegment<byte> packet)
-        {
-            _lastSendTime = DateTime.UtcNow;
-            _session.Send(packet);
         }
         public void Dispose()
         {
@@ -62,7 +46,6 @@ namespace EchoClient.Serializer
 
         public void SetSession(ISession session)
         {
-            _session = session;
         }
 
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
@@ -75,5 +58,7 @@ namespace EchoClient.Serializer
             packet = bytes;
             return true;
         }
+
+
     }
 }

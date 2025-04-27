@@ -1,7 +1,6 @@
 ﻿using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using EchoClient.Handler;
-using EchoClient.Serializer;
 
 namespace EchoClient
 {
@@ -10,7 +9,6 @@ namespace EchoClient
         private bool _isConnect = false;
         private ISession _session;
         private EchoHandler _echoHandler;
-        private EchoSerializer _echoSerializer;
         public ClientModule(SessionConfiguration sessionConfiguration) : base(sessionConfiguration)
         {
         }
@@ -22,11 +20,12 @@ namespace EchoClient
         {
             for (int i = 0; i < count; i++)
             {
-                Task.Factory.StartNew(() =>
-                {
-                    _echoSerializer.SendMessage(message);
-                });
+                SendAsync(message);
             }
+        }
+        public Task SendAsync(byte[] bytes)
+        {
+            return Task.Factory.StartNew(() => { Send(bytes); }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
         }
         protected override void OnConnected(ISession session)
         {
@@ -36,10 +35,6 @@ namespace EchoClient
                 if (component is EchoHandler echoHandler)
                 {
                     _echoHandler = echoHandler;
-                }
-                if (component is EchoSerializer echoSerializer)
-                {
-                    _echoSerializer = echoSerializer;
                 }
             }
             _isConnect = true;

@@ -7,17 +7,9 @@ using System.Text;
 
 namespace EchoClient.Serializer
 {
-    internal class PacketSerializer(EchoHandler echoHandler) : IPacketDeserializer, IPacketSerializer
+    internal class PacketSerializer(EchoHandler echoHandler) : IPacketProcessor, IPacketSerializer
     {
         private const int SizeToInt = sizeof(int);
-        public void Deserialize(in ArraySegment<byte> packet)
-        {
-            var protocol = BitConverter.ToInt32(packet.Array, 0);
-
-            var bodyString = Encoding.UTF8.GetString(packet.Array, 4, packet.Array.Length - 4);
-
-            ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
-        }
 
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
@@ -38,6 +30,15 @@ namespace EchoClient.Serializer
             Array.Copy(sendPacket.Body, 0, buffer, SizeToInt + SizeToInt, sendPacket.Body.Length);
 
             return buffer;
+        }
+
+        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
+        {
+            var protocol = BitConverter.ToInt32(packet.Array, 0);
+
+            var bodyString = Encoding.UTF8.GetString(packet.Array, 4, packet.Array.Length - 4);
+
+            ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
         }
 
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)

@@ -9,22 +9,22 @@ namespace EchoClient
 {
     internal class Program
     {
-        static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> SessionSetupFactory()
+        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> SessionSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>>(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
         }
-        static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> EchoSetupFactory()
+        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
 
-            return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>>(
                     echoSerializer,
                     echoSerializer,
                     [echoSerializer]);
@@ -36,9 +36,12 @@ namespace EchoClient
         {
             var clients = new List<ClientModule>();
 
-            Parallel.For(0, 5000, (i) =>
+            ThreadPool.GetMinThreads(out int workerThreads, out int ioThreads);
+            ThreadPool.SetMinThreads(workerThreads, ioThreads + 20);
+
+            Parallel.For(0, 1, (i) =>
             {
-                var client = new ClientModule(new SessionConfiguration(SessionSetupFactory));
+                var client = new ClientModule(new SessionConfiguration(EchoSetupFactory));
 
                 try
                 {
@@ -58,7 +61,8 @@ namespace EchoClient
             {
                 client.Close();
             }
-            Monitor.Instance.Print("DignusSocketServer");
+
+            Monitor.Instance.PrintEcho("DignusSocketServer");
         }
 
         private static void ServerBechmark()
@@ -101,8 +105,8 @@ namespace EchoClient
             LogBuilder.Build();
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-
-            ServerBechmark();
+            SingleBechmark();
+            //ServerBechmark();
 
             Console.ReadLine();
         }

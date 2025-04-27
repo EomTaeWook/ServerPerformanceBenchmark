@@ -60,6 +60,17 @@ namespace EchoClient
             Console.WriteLine($"Max RTT (ms): {MaxRttMs:F2}");
             Console.WriteLine($"Min RTT (ms): {MinRttMs:F2}");
         }
+        public void PrintEcho(string serverName)
+        {
+            Console.WriteLine($"[Monitor]");
+            if (string.IsNullOrEmpty(serverName) == false)
+            {
+                Console.WriteLine($"[{serverName}]");
+            }
+            Console.WriteLine($"Total Client: {_totalClientCount}");
+            Console.WriteLine($"Total Bytes: {_totalBytes}");
+            Console.WriteLine($"Total Message: {_totalBytes / Program.Message.Length}");
+        }
 
         public void Clear()
         {
