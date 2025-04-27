@@ -1,3 +1,24 @@
+# 📈 DignusSocketServer Benchmark
+Server address: 127.0.0.1
+Server port: 1111
+Working threads: 1
+Working clients: 1
+Working messages: 1000
+Message size: 32
+Seconds to benchmarking: 10
+
+Errors: 0
+
+Total time: 10.001 s
+Total data: 1.17 GiB
+Total messages: 39,107,244
+Data throughput: 119.3 MiB/s
+Message throughput: 3,910,724 msg/s
+
+![TopPerformance](Image/Dignus_TopPerformance_39107244msg_1251MB.png)
+
+
+
 # 서버별 성능 비교 (2024-04-27)
 
 ## 🧪 테스트 조건
@@ -22,8 +43,8 @@
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 5,674,121 | 4,946,353 | 3,170,083 |
-| Max RTT (ms) | 136.74 | 140.65 | 128.70 |
+| Total Received | 5,984,326 | 4,946,353 | 3,170,083 |
+| Max RTT (ms) | 73.02 | 140.65 | 128.70 |
 | Min RTT (ms) | 0.03 | 0.04 | 0.05 |
 
 ---
@@ -33,8 +54,8 @@
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,378,411 | 5,226,484 | 3,127,793 |
-| Max RTT (ms) | 80.50 | 136.36 | 146.61 |
+| Total Received | 6,543,785 | 5,226,484 | 3,127,793 |
+| Max RTT (ms) | 40.56 | 136.36 | 146.61 |
 | Min RTT (ms) | 0.02 | 0.04 | 0.05 |
 
 ---
@@ -44,8 +65,8 @@
 | 항목 | DignusSocketServer (초기) | DignusSocketServer (웜업 후) | DotNetty (초기) | DotNetty (웜업 후) | SuperSocket 2.0 (초기) | SuperSocket 2.0 (웜업 후) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 5,674,121 | 6,378,411 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
-| Max RTT (ms) | 136.74 | 80.50 | 140.65 | 136.36 | 128.70 | 146.61 |
+| Total Received | 5,984,326 | 6,543,785 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
+| Max RTT (ms) | 73.02 | 40.56 | 140.65 | 136.36 | 128.70 | 146.61 |
 | Min RTT (ms) | 0.03 | 0.02 | 0.04 | 0.04 | 0.05 | 0.05 |
 
 ---
@@ -94,8 +115,8 @@
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 5,674,121 | 4,946,353 | 3,170,083 |
-| Max RTT (ms) | 136.74 | 140.65 | 128.70 |
+| Total Received | 5,984,326 | 4,946,353 | 3,170,083 |
+| Max RTT (ms) | 73.02 | 140.65 | 128.70 |
 | Min RTT (ms) | 0.03 | 0.04 | 0.05 |
 
 ---
@@ -105,8 +126,8 @@
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,378,411 | 5,226,484 | 3,127,793 |
-| Max RTT (ms) | 80.50 | 136.36 | 146.61 |
+| Total Received | 6,543,785 | 5,226,484 | 3,127,793 |
+| Max RTT (ms) | 40.56 | 136.36 | 146.61 |
 | Min RTT (ms) | 0.02 | 0.04 | 0.05 |
 
 ---
@@ -116,8 +137,8 @@
 | Item | DignusSocketServer (Cold) | DignusSocketServer (Warm-up) | DotNetty (Cold) | DotNetty (Warm-up) | SuperSocket 2.0 (Cold) | SuperSocket 2.0 (Warm-up) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 5,674,121 | 6,378,411 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
-| Max RTT (ms) | 136.74 | 80.50 | 140.65 | 136.36 | 128.70 | 146.61 |
+| Total Received | 5,984,326 | 6,543,785 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
+| Max RTT (ms) | 73.02 | 40.56 | 140.65 | 136.36 | 128.70 | 146.61 |
 | Min RTT (ms) | 0.03 | 0.02 | 0.04 | 0.04 | 0.05 | 0.05 |
 
 # 🖼️ Test Result Captures (Cold Start)

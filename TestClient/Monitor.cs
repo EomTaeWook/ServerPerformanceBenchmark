@@ -6,6 +6,7 @@ namespace EchoClient
     {
         private long _totalClientCount = 0;
         private long _totalReceivedCount = 0;
+        private long _totalBytes = 0;
         public double MaxRttMs { get; private set; } = -1;
         public double MinRttMs { get; private set; } = 999999;
 
@@ -14,6 +15,10 @@ namespace EchoClient
         public void AddReceivedCount(long receivedCount)
         {
             Interlocked.Add(ref _totalReceivedCount, receivedCount);
+        }
+        public void AddTotalBytes(long totalBytes)
+        {
+            Interlocked.Add(ref _totalBytes, totalBytes);
         }
         public void AddClientCount(long count)
         {
@@ -49,6 +54,8 @@ namespace EchoClient
                 Console.WriteLine($"[{serverName}]");
             }
             Console.WriteLine($"Total Client: {_totalClientCount}");
+            //Console.WriteLine($"Total Bytes: {_totalBytes}");
+            //Console.WriteLine($"Total Message: {_totalBytes / Program.Message.Length}");
             Console.WriteLine($"Total Received: {_totalReceivedCount}");
             Console.WriteLine($"Max RTT (ms): {MaxRttMs:F2}");
             Console.WriteLine($"Min RTT (ms): {MinRttMs:F2}");

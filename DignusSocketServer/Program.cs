@@ -8,6 +8,7 @@ namespace DignusEchoServer
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
@@ -20,7 +21,14 @@ namespace DignusEchoServer
             LogHelper.Info($"start server... port : {5000}");
             Console.ReadKey();
         }
-
+        static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> EchoSetupFactory()
+        {
+            EchoSerializer echoSerializer = new();
+            return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+                    echoSerializer,
+                    echoSerializer,
+                    [echoSerializer]);
+        }
         static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> SessionSetupFactory()
         {
             EchoHandler handler = new();

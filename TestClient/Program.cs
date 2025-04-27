@@ -20,14 +20,49 @@ namespace EchoClient
                     packetSerializer,
                     [handler]);
         }
-        static void Main(string[] args)
+        static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> EchoSetupFactory()
         {
-            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
-            LogBuilder.Build();
+            EchoSerializer echoSerializer = new();
 
-            ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
+            return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+                    echoSerializer,
+                    echoSerializer,
+                    [echoSerializer]);
+        }
 
+        public static byte[] Message = new byte[32];
 
+        private static void SingleBechmark()
+        {
+            var clients = new List<ClientModule>();
+
+            Parallel.For(0, 5000, (i) =>
+            {
+                var client = new ClientModule(new SessionConfiguration(SessionSetupFactory));
+
+                try
+                {
+                    client.Connect("127.0.0.1", 5000);
+                    client.SendMessage(Message, 1000);
+                    clients.Add(client);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error(ex);
+                }
+            });
+
+            LogHelper.Info($"{clients.Count} clients connect complete");
+            Task.Delay(10000).GetAwaiter().GetResult();
+            foreach (var client in clients)
+            {
+                client.Close();
+            }
+            Monitor.Instance.Print("DignusSocketServer");
+        }
+
+        private static void ServerBechmark()
+        {
             var clients = new List<ClientModule>();
 
             for (var i = 0; i < 5000; ++i)
@@ -58,7 +93,18 @@ namespace EchoClient
             {
                 client.Close();
             }
-            Monitor.Instance.Print("SuperSocket2.0");
+            Monitor.Instance.Print("DignusSocketServer");
+        }
+        static void Main(string[] args)
+        {
+            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
+            LogBuilder.Build();
+
+            ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
+
+            ServerBechmark();
+
+            Console.ReadLine();
         }
     }
 }
