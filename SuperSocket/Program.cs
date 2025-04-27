@@ -4,15 +4,18 @@ using SuperSocket.Server;
 using SuperSocket.Server.Abstractions;
 using SuperSocket.Server.Host;
 using SuperSocketServer.Filter;
+using SuperSocketServer.Handler;
+using SuperSocketServer.Protocol;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        var host = SuperSocketHostBuilder.Create<byte[], BytePipelineFilter>()
+        var echoHandler = new EchoHandler();
+        var host = SuperSocketHostBuilder.Create<PacketInfo, BytePipelineFilter>()
             .UsePackageHandler((async (s, p) =>
             {
-                await s.SendAsync(p.ToArray());
+                await echoHandler.Handle(s, p);
             }));
 
         host.ConfigureSuperSocket(options =>
@@ -24,12 +27,16 @@ internal class Program
                 BackLog = 200,
                 NoDelay = true,
             });
-        }).ConfigureLogging((logging) => 
+        }).ConfigureLogging((logging) =>
         {
             logging.ClearProviders();
         })
         .Build()
-        .Run();
+        .RunAsync();
+
+
+        Console.WriteLine($"Start Echo Server");
+        Console.ReadLine();
 
         int gen0 = GC.CollectionCount(0);
         int gen1 = GC.CollectionCount(1);

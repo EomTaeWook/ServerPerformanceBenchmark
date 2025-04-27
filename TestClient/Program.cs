@@ -1,95 +1,64 @@
 ﻿using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
-using System.Collections.Concurrent;
-using TestClient;
-using TestClient.PacketSerializer;
+using EchoClient.Handler;
+using EchoClient.Protocol;
+using EchoClient.Serializer;
 
-internal class Program
+namespace EchoClient
 {
-    private static void Main(string[] args)
+    internal class Program
     {
-        LogBuilder.Configuration(LogConfigXmlReader.Load("DignusLog.config")).Build();
-        RunClients(1);
-    }
-    static void RunConnectClients(int clientCount = 1000)
-    {
-        var clients = new ConcurrentBag<SocketClient>();
-        var failedCount = 0;
-        Parallel.For(0, clientCount, (i) =>
+        static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> SessionSetupFactory()
         {
-            try
-            {
-                var client = new SocketClient(new SessionConfiguration(SerializerFactory));
-                clients.Add(client);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
-            }
-        });
+            EchoHandler handler = new();
 
-        for (int i = 0; i < 5; ++i)
+            PacketSerializer packetSerializer = new(handler);
+
+            return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+                    packetSerializer,
+                    packetSerializer,
+                    [handler]);
+        }
+        static void Main(string[] args)
         {
-            Parallel.ForEach(clients, (client) =>
+            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
+            LogBuilder.Build();
+
+            ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
+
+
+            var clients = new List<ClientModule>();
+
+            for (var i = 0; i < 5000; ++i)
             {
+                var client = new ClientModule(new SessionConfiguration(SessionSetupFactory));
+
                 try
                 {
                     client.Connect("127.0.0.1", 5000);
+                    clients.Add(client);
                 }
                 catch (Exception ex)
                 {
-                    Interlocked.Increment(ref failedCount);
+                    LogHelper.Error(ex);
                 }
+            }
 
+            LogHelper.Info($"{clients.Count} clients connect complete");
+
+            Parallel.ForEach(clients, client =>
+            {
+                client.SendEcho("Hello Dignus Socket");
             });
 
-            Parallel.ForEach(clients, (client) =>
+            Task.Delay(30000).GetAwaiter().GetResult();
+
+            foreach (var client in clients)
             {
                 client.Close();
-            });
-
-            var random = Random.Shared.Next(10, 100);
-
-            Task.Delay(random).GetAwaiter().GetResult();
+            }
+            Monitor.Instance.Print("DotNetty");
         }
-
-        Console.WriteLine($"failedCount : {failedCount}");
-    }
-    static void RunClients(int clientCount = 1000)
-    {
-        var clients = new ConcurrentBag<SocketClient>();
-        var result = Parallel.For(0, clientCount, (i) =>
-        {
-            try
-            {
-                var client = new SocketClient(new SessionConfiguration(SerializerFactory));
-                clients.Add(client);
-                client.Connect("127.0.0.1", 5000, 2000);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[ERROR] {i}번째 연결 실패: {ex.Message}");
-            }
-        });
-
-        Console.WriteLine($"{clients.Count} clients connected successfully.");
-        Task.Delay(7000).GetAwaiter().GetResult();
-
-        Parallel.ForEach(clients, (client) =>
-        {
-            client.Close();
-        });
-    }
-    static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> SerializerFactory()
-    {
-        var dummyPacketSerializer = new DummyPacketSerializer();
-        var sessionComponents = new List<ISessionComponent>()
-        {
-            dummyPacketSerializer
-        };
-
-        return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(dummyPacketSerializer, dummyPacketSerializer, sessionComponents);
     }
 }
-

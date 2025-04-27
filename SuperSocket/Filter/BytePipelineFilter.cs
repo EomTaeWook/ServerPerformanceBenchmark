@@ -1,24 +1,52 @@
 ﻿using SuperSocket.ProtoBase;
-using System;
+using SuperSocketServer.Protocol;
 using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperSocketServer.Filter
 {
-    class BytePipelineFilter : PipelineFilterBase<byte[]>
+    class BytePipelineFilter : FixedHeaderPipelineFilter<PacketInfo>
     {
-        public override byte[] Filter(ref SequenceReader<byte> reader)
+        public BytePipelineFilter() : base(4)
         {
-            if(reader.Remaining > 0)
+        }
+        protected override PacketInfo DecodePackage(ref ReadOnlySequence<byte> buffer)
+        {
+            var reader = new SequenceReader<byte>(buffer);
+
+            if (reader.TryReadLittleEndian(out int bodySize) == false)
             {
-                var bytes = reader.Sequence.ToArray();
-                reader.Advance(reader.Remaining);
-                return bytes;
+                return default;
             }
-            return null; 
+
+            if (reader.TryReadLittleEndian(out int protocol) == false)
+            {
+                return default;
+            }
+
+            int bodyLength = bodySize - 4;
+
+            if (reader.TryReadExact(bodyLength, out ReadOnlySequence<byte> body) == false)
+            {
+                return default;
+            }
+            return new PacketInfo()
+            {
+                Body = body,
+                Protocol = protocol,
+            };
+        }
+        protected override int GetBodyLengthFromHeader(ref ReadOnlySequence<byte> buffer)
+        {
+            if (buffer.Length < 4)
+            {
+                return 0;
+            }
+            var reader = new SequenceReader<byte>(buffer);
+            if (!reader.TryReadLittleEndian(out int bodySize))
+            {
+                return 0;
+            }
+            return bodySize;
         }
     }
 }

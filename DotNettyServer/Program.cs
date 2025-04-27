@@ -5,7 +5,7 @@ using DotNettyServer.Handler;
 using System.Net;
 
 Console.WriteLine("Starting Echo Server...");
-var bossGroup = new MultithreadEventLoopGroup(1);
+var bossGroup = new MultithreadEventLoopGroup();
 var workerGroup = new MultithreadEventLoopGroup();
 
 try

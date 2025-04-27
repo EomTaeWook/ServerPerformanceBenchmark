@@ -4,15 +4,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="Dignus">
       <HintPath>..\Dll\Dignus.dll</HintPath>
-    </Reference>
-    <Reference Include="Dignus.Extensions">
-      <HintPath>..\Dll\Dignus.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Dignus.Log">
       <HintPath>..\Dll\Dignus.Log.dll</HintPath>

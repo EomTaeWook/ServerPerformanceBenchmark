@@ -4,19 +4,32 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Dignus">
       <HintPath>..\Dll\Dignus.dll</HintPath>
     </Reference>
-    <Reference Include="Dignus.Extensions">
-      <HintPath>..\Dll\Dignus.Extensions.dll</HintPath>
+    <Reference Include="Dignus.Log">
+      <HintPath>..\Dll\Dignus.Log.dll</HintPath>
     </Reference>
     <Reference Include="Dignus.Sockets">
       <HintPath>..\Dll\Dignus.Sockets.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DignusLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

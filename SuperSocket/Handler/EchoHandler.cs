@@ -1,13 +1,28 @@
-﻿using SuperSocket.Server.Abstractions;
-using SuperSocket.Server.Abstractions.Session;
+﻿using SuperSocket.Server.Abstractions.Session;
+using SuperSocketServer.Packets;
+using SuperSocketServer.Protocol;
+using System.Text;
+using System.Text.Json;
 
 namespace SuperSocketServer.Handler
 {
-    public class EchoHandler : IPackageHandler<byte[]>
+    internal class EchoHandler
     {
-        public async ValueTask Handle(IAppSession session, byte[] package, CancellationToken cancellationToken)
+        public ValueTask Handle(IAppSession session, PacketInfo package)
         {
-            await session.SendAsync(package);
+            if (package.Protocol == 0)
+            {
+                var bodyString = Encoding.UTF8.GetString(package.Body);
+                Process(session, JsonSerializer.Deserialize<EchoMessage>(bodyString));
+            }
+
+            return ValueTask.CompletedTask;
+        }
+        private void Process(IAppSession session, EchoMessage echoMessage)
+        {
+            var body = JsonSerializer.Serialize(echoMessage);
+            var packet = new Packet(0, body);
+            _ = session.SendAsync(packet.ToBytes());
         }
     }
 }
