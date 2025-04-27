@@ -33,7 +33,7 @@ namespace DotNettyServer.Handler
             switch (protocol)
             {
                 case 0:
-                    ProcessAsync(ctx, Deserialize<EchoMessage>(body));
+                    Process(ctx, Deserialize<EchoMessage>(body));
                     break;
             }
         }
@@ -43,7 +43,7 @@ namespace DotNettyServer.Handler
             return JsonSerializer.Deserialize<T>(jsonBody);
         }
 
-        private async Task ProcessAsync(IChannelHandlerContext ctx, EchoMessage echoMessage)
+        private void Process(IChannelHandlerContext ctx, EchoMessage echoMessage)
         {
             var body = JsonSerializer.Serialize(echoMessage);
             var packet = new Packet(0, body);

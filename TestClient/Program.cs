@@ -58,7 +58,7 @@ namespace EchoClient
             {
                 client.Close();
             }
-            Monitor.Instance.Print("DotNetty");
+            Monitor.Instance.Print("SuperSocket2.0");
         }
     }
 }

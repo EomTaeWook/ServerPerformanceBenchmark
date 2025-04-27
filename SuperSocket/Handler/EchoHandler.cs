@@ -22,7 +22,7 @@ namespace SuperSocketServer.Handler
         {
             var body = JsonSerializer.Serialize(echoMessage);
             var packet = new Packet(0, body);
-            _ = session.SendAsync(packet.ToBytes());
+            var _ = session.SendAsync(packet.ToBytes());
         }
     }
 }
