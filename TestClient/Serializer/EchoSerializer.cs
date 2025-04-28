@@ -1,4 +1,5 @@
 ﻿using Dignus.Collections;
+using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using EchoClient.Packets;
 
@@ -16,13 +17,14 @@ namespace EchoClient.Serializer
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             _receivedSize += packet.Count;
-            while (_receivedSize >= Program.Message.Length)
+            while (_receivedSize >= Consts.Message.Length)
             {
                 Task.Factory.StartNew(() =>
                 {
-                    session.Send(Program.Message);
+                    session.Send(Consts.Message);
+
                 }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
-                _receivedSize -= Program.Message.Length;
+                _receivedSize -= Consts.Message.Length;
             }
             Interlocked.Add(ref _totalBytes, packet.Count);
         }
@@ -51,7 +53,7 @@ namespace EchoClient.Serializer
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
         {
             packet = null;
-            if (buffer.TryRead(out byte[] bytes, buffer.Count) == false)
+            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count) == false)
             {
                 return false;
             }

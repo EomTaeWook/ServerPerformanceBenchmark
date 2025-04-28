@@ -58,12 +58,12 @@ namespace EchoClient.Serializer
                 return false;
             }
 
-            if (buffer.TryRead(out _, SizeToInt) == false)
+            if (buffer.TryReadBytes(out _, SizeToInt) == false)
             {
                 return false;
             }
 
-            if (buffer.TryRead(out byte[] bodyBytes, bodySize) == false)
+            if (buffer.TryReadBytes(out byte[] bodyBytes, bodySize) == false)
             {
                 return false;
             }

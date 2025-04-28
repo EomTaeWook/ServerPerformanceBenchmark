@@ -30,14 +30,12 @@ namespace EchoClient
                     [echoSerializer]);
         }
 
-        public static byte[] Message = new byte[32];
-
         private static void SingleBechmark()
         {
             var clients = new List<ClientModule>();
 
             ThreadPool.GetMinThreads(out int workerThreads, out int ioThreads);
-            ThreadPool.SetMinThreads(workerThreads, ioThreads + 20);
+            ThreadPool.SetMinThreads(workerThreads + 100, ioThreads + 100);
 
             Parallel.For(0, 1, (i) =>
             {
@@ -46,7 +44,7 @@ namespace EchoClient
                 try
                 {
                     client.Connect("127.0.0.1", 5000);
-                    client.SendMessage(Message, 1000);
+                    client.SendMessage(Consts.Message, 1000);
                     clients.Add(client);
                 }
                 catch (Exception ex)
@@ -56,6 +54,7 @@ namespace EchoClient
             });
 
             LogHelper.Info($"{clients.Count} clients connect complete");
+            Monitor.Instance.Start();
             Task.Delay(10000).GetAwaiter().GetResult();
             foreach (var client in clients)
             {
@@ -104,11 +103,18 @@ namespace EchoClient
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
             SingleBechmark();
             //ServerBechmark();
 
             Console.ReadLine();
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LogHelper.Error(e.ExceptionObject as Exception);
         }
     }
 }

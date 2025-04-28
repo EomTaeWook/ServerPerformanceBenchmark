@@ -12,6 +12,8 @@ namespace EchoClient
 
         private object _minRttSyncObj = new object();
         private object _maxRttSyncObj = new object();
+
+        private DateTime _startDateTime;
         public void AddReceivedCount(long receivedCount)
         {
             Interlocked.Add(ref _totalReceivedCount, receivedCount);
@@ -24,7 +26,10 @@ namespace EchoClient
         {
             Interlocked.Add(ref _totalClientCount, count);
         }
-
+        public void Start()
+        {
+            _startDateTime = DateTime.UtcNow;
+        }
         public void SetMaxRttMs(double maxRttMs)
         {
             lock (_maxRttSyncObj)
@@ -67,10 +72,19 @@ namespace EchoClient
             {
                 Console.WriteLine($"[{serverName}]");
             }
-            Console.WriteLine($"Total Client: {_totalClientCount}");
-            Console.WriteLine($"Total Bytes: {_totalBytes}");
-            Console.WriteLine($"Total Message: {_totalBytes / Program.Message.Length}");
+            var totalSeconds = (DateTime.UtcNow - _startDateTime).TotalSeconds;
+
+            Console.WriteLine($"Total Time: {totalSeconds:F3} seconds");
+            Console.WriteLine($"Total Client: {_totalClientCount:N0}");
+            Console.WriteLine($"Total Data: {_totalBytes / (1024.0 * 1024.0 * 1024.0):F2} GiB");
+
+            var totalMessage = _totalBytes / Consts.Message.Length;
+            Console.WriteLine($"Total Message: {totalMessage:N0}");
+            Console.WriteLine($"Data Throughput: {(_totalBytes / (1024.0 * 1024.0)) / totalSeconds:F2} MiB/s");
+            Console.WriteLine($"Message Throughput: {totalMessage / totalSeconds:N0} msg/s");
+
         }
+
 
         public void Clear()
         {

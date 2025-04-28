@@ -25,7 +25,10 @@ namespace EchoClient
         }
         public Task SendAsync(byte[] bytes)
         {
-            return Task.Factory.StartNew(() => { Send(bytes); }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
+            return Task.Factory.StartNew(() =>
+            {
+                Send(bytes);
+            }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
         }
         protected override void OnConnected(ISession session)
         {

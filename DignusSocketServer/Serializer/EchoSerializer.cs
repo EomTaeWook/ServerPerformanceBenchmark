@@ -1,4 +1,5 @@
 ﻿using Dignus.Collections;
+using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using DignusEchoServer.Packets;
 
@@ -17,7 +18,7 @@ namespace DignusEchoServer.Serializer
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
         {
             packet = null;
-            if (buffer.TryRead(out byte[] bytes, buffer.Count) == false)
+            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count) == false)
             {
                 return false;
             }
