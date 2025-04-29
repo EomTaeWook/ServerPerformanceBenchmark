@@ -2,6 +2,7 @@
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using EchoClient.Packets;
+using System.Diagnostics;
 
 namespace EchoClient.Serializer
 {
@@ -57,10 +58,9 @@ namespace EchoClient.Serializer
             {
                 return false;
             }
+
             packet = bytes;
             return true;
         }
-
-
     }
 }

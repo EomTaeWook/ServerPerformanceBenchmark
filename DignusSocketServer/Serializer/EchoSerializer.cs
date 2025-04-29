@@ -28,7 +28,7 @@ namespace DignusEchoServer.Serializer
 
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
-            session.Send(packet.Array);
+            session.Send(packet);
         }
     }
 }
