@@ -1,4 +1,5 @@
 ﻿using Dignus.Framework;
+using System.ComponentModel;
 
 namespace EchoClient
 {
@@ -13,7 +14,7 @@ namespace EchoClient
         private object _minRttSyncObj = new object();
         private object _maxRttSyncObj = new object();
 
-        private DateTime _startDateTime;
+        private DateTime _startDateTime = DateTime.MinValue;
         public void AddReceivedCount(long receivedCount)
         {
             Interlocked.Add(ref _totalReceivedCount, receivedCount);
@@ -50,7 +51,6 @@ namespace EchoClient
                 }
             }
         }
-
         public void Print(string serverName)
         {
             Console.WriteLine($"[Monitor]");
@@ -76,13 +76,13 @@ namespace EchoClient
 
             Console.WriteLine($"Total Time: {totalSeconds:F3} seconds");
             Console.WriteLine($"Total Client: {_totalClientCount:N0}");
+            Console.WriteLine($"Total Bytes: {_totalBytes:N0}");
             Console.WriteLine($"Total Data: {_totalBytes / (1024.0 * 1024.0 * 1024.0):F2} GiB");
 
             var totalMessage = _totalBytes / Consts.Message.Length;
             Console.WriteLine($"Total Message: {totalMessage:N0}");
             Console.WriteLine($"Data Throughput: {(_totalBytes / (1024.0 * 1024.0)) / totalSeconds:F2} MiB/s");
             Console.WriteLine($"Message Throughput: {totalMessage / totalSeconds:N0} msg/s");
-
         }
 
 
