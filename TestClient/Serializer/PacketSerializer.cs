@@ -63,13 +63,11 @@ namespace EchoClient.Serializer
                 return false;
             }
 
-            if (buffer.TryReadBytes(out byte[] bodyBytes, bodySize) == false)
+            if (buffer.TryReadBytes(out byte[] body, bodySize) == false)
             {
                 return false;
             }
-
-            packet = bodyBytes;
-
+            packet = body;
             return true;
         }
     }
