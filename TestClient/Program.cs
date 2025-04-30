@@ -67,7 +67,7 @@ namespace EchoClient
         {
             var clients = new List<ClientModule>();
 
-            for (var i = 0; i < 1; ++i)
+            for (var i = 0; i < 5000; ++i)
             {
                 var client = new ClientModule(new SessionConfiguration(SessionSetupFactory));
 
@@ -105,8 +105,8 @@ namespace EchoClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-            SingleBechmark();
-            //ServerBechmark();
+            //SingleBechmark();
+            ServerBechmark();
 
             Console.ReadLine();
         }

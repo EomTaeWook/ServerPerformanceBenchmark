@@ -1,5 +1,4 @@
 ﻿using Dignus.Framework;
-using System.ComponentModel;
 
 namespace EchoClient
 {
@@ -61,7 +60,7 @@ namespace EchoClient
             Console.WriteLine($"Total Client: {_totalClientCount}");
             //Console.WriteLine($"Total Bytes: {_totalBytes}");
             //Console.WriteLine($"Total Message: {_totalBytes / Program.Message.Length}");
-            Console.WriteLine($"Total Received: {_totalReceivedCount}");
+            Console.WriteLine($"Total Received: {_totalReceivedCount:N0}");
             Console.WriteLine($"Max RTT (ms): {MaxRttMs:F2}");
             Console.WriteLine($"Min RTT (ms): {MinRttMs:F2}");
         }
