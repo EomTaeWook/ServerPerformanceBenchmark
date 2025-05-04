@@ -22,6 +22,7 @@ namespace EchoClient
         {
             for (int i = 0; i < count; i++)
             {
+                //Send(message);
                 SendAsync(message);
             }
         }

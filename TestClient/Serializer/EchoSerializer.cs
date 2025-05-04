@@ -19,6 +19,7 @@ namespace EchoClient.Serializer
             _receivedSize += packet.Count;
             while (_receivedSize >= Consts.Message.Length)
             {
+                //session.Send(Consts.Message);
                 Task.Factory.StartNew(() =>
                 {
                     session.Send(Consts.Message);
