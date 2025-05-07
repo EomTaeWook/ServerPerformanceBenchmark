@@ -1,22 +1,12 @@
-# 📈 DignusSocketServer Benchmark
-- Server address: 127.0.0.1
-- Server port: 5000
-- Working clients: 1
-- Working messages: 1000
-- Message size: 32
-- Seconds to benchmarking: 10
+# 📈 DignusSocketServer 
 
-- Errors: 0
-
-- Total time: 10.001 s
-- Total data: 1.225 GiB
-- Total messages: 41,108,797
-- Data throughput: 125.4 MiB/s
-- Message throughput: 4,110,371 msg/s
+고성능 C# 비동기 소켓 서버 프레임워크입니다.
+SocketAsyncEventArgs 재사용, 세션 풀링, 프레이밍 처리, 직렬화/역직렬화 구조 등을 통해 수십만 동시 접속과 수백만 메시지 처리 성능을 지원합니다.
+가볍고 확장 가능하도록 설계되어 있습니다.
 
 ---
 
-![TopPerformance](Image/Dignus_Performance_41108797msg_1225MiB.png)
+https://github.com/EomTaeWook/DignusSocketServer
 
 ---
 
@@ -91,6 +81,26 @@
 ## 📅 테스트 일자
 - 2024-04-27
 
+
+# 📈 DignusSocketServer
+A high-performance asynchronous socket server framework built with C#.
+Supports hundreds of thousands of concurrent connections and millions of messages through:
+
+Reusable SocketAsyncEventArgs
+
+Session pooling
+
+Framing logic
+
+Custom serialization/deserialization architecture
+
+It is designed to be lightweight, efficient, and easily extensible.
+
+---
+
+https://github.com/EomTaeWook/DignusSocketServer
+
+---
 
 # Server Performance Comparison (2024-04-27)
 

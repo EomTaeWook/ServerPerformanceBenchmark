@@ -2,7 +2,6 @@
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using EchoClient.Packets;
-using System.Diagnostics;
 
 namespace EchoClient.Serializer
 {
@@ -13,13 +12,14 @@ namespace EchoClient.Serializer
         private double _maxRttMs = -1;
         private double _minRttMs = double.MaxValue;
         private DateTime _lastSendTime = DateTime.MinValue;
-
+        private ISession _session;
         private int _receivedSize = 0;
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             _receivedSize += packet.Count;
             while (_receivedSize >= Consts.Message.Length)
             {
+                //session.Send(Consts.Message);
                 Task.Factory.StartNew(() =>
                 {
                     session.Send(Consts.Message);
@@ -31,6 +31,7 @@ namespace EchoClient.Serializer
         }
         public void Dispose()
         {
+            _session.Send(Consts.Message);
             Monitor.Instance.AddReceivedCount(_receivedCount);
             Monitor.Instance.SetMaxRttMs(_maxRttMs);
             Monitor.Instance.SetMinRttMs(_minRttMs);
@@ -49,17 +50,17 @@ namespace EchoClient.Serializer
 
         public void SetSession(ISession session)
         {
+            _session = session;
         }
 
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
         {
-            packet = null;
-            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count) == false)
+            if (buffer.TryReadBytes(out byte[] body, buffer.Count) == false)
             {
+                packet = null;
                 return false;
             }
-
-            packet = bytes;
+            packet = body;
             return true;
         }
     }

@@ -9,6 +9,8 @@ namespace EchoClient
         private bool _isConnect = false;
         private ISession _session;
         private EchoHandler _echoHandler;
+
+        private int sendCount = 0;
         public ClientModule(SessionConfiguration sessionConfiguration) : base(sessionConfiguration)
         {
         }
@@ -20,6 +22,7 @@ namespace EchoClient
         {
             for (int i = 0; i < count; i++)
             {
+                //Send(message);
                 SendAsync(message);
             }
         }

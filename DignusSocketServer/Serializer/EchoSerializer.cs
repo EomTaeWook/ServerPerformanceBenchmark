@@ -17,17 +17,18 @@ namespace DignusEchoServer.Serializer
         }
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
         {
-            packet = null;
-            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count) == false)
+            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count))
             {
-                return false;
+                packet = bytes;
+                return true;
             }
-            packet = bytes;
-            return true;
+            packet = null;
+            return false;
         }
-
+        private int count;
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
+            //Console.WriteLine($"session : {session.Id}, packet : {packet.Count} {count++}");
             session.Send(packet);
         }
     }

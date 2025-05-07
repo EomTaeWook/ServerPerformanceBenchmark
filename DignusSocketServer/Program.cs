@@ -8,13 +8,18 @@ namespace DignusEchoServer
 {
     internal class Program
     {
-
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LogHelper.Error(e.ExceptionObject as Exception);
+        }
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
-            var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
+            var sessionInitializer = new SessionConfiguration(SessionSetupFactory);
 
             EchoServer echoServer = new(sessionInitializer);
             echoServer.Start(5000);

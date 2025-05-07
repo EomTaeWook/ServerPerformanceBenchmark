@@ -33,9 +33,10 @@ namespace EchoClient
         private static void SingleBechmark()
         {
             var clients = new List<ClientModule>();
+            LogHelper.Info($"start");
 
             ThreadPool.GetMinThreads(out int workerThreads, out int ioThreads);
-            ThreadPool.SetMinThreads(workerThreads + 100, ioThreads + 100);
+            ThreadPool.SetMinThreads(workerThreads, ioThreads + 100);
 
             Parallel.For(0, 1, (i) =>
             {
@@ -53,14 +54,12 @@ namespace EchoClient
                 }
             });
 
-            LogHelper.Info($"{clients.Count} clients connect complete");
             Monitor.Instance.Start();
             Task.Delay(10000).GetAwaiter().GetResult();
             foreach (var client in clients)
             {
                 client.Close();
             }
-
             Monitor.Instance.PrintEcho("DignusSocketServer");
         }
 
@@ -106,8 +105,8 @@ namespace EchoClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-            SingleBechmark();
-            //ServerBechmark();
+            //SingleBechmark();
+            ServerBechmark();
 
             Console.ReadLine();
         }
