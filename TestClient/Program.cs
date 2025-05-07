@@ -44,7 +44,7 @@ namespace EchoClient
                 try
                 {
                     client.Connect("127.0.0.1", 5000);
-                    client.SendMessage(Consts.Message, 1);
+                    client.SendMessage(Consts.Message, 1000);
                     clients.Add(client);
                 }
                 catch (Exception ex)
