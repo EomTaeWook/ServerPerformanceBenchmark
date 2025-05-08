@@ -24,25 +24,21 @@ namespace DignusEchoServer.Serializer
         {
             if (packet is Packet sendPacket == false)
             {
-                throw new InvalidCastException(nameof(packet));
+                throw new InvalidOperationException("Invalid packet type");
             }
 
-            byte[] buffer = new byte[SizeToInt + sendPacket.GetLength()];
+            byte[] bytes = new byte[sendPacket.GetLength() + sizeof(int)];
+            var size = sendPacket.GetLength();
+            Buffer.BlockCopy(BitConverter.GetBytes(size), 0, bytes, 0, 4);
+            Buffer.BlockCopy(sendPacket.Body, 0, bytes, 4, size);
 
-            var bodySizeBytes = BitConverter.GetBytes(sendPacket.GetLength());
-
-            Array.Copy(bodySizeBytes, buffer, SizeToInt);
-            var protocolBytes = BitConverter.GetBytes(sendPacket.Protocol);
-
-            Array.Copy(protocolBytes, 0, buffer, SizeToInt, SizeToInt);
-
-            Array.Copy(sendPacket.Body, 0, buffer, SizeToInt + SizeToInt, sendPacket.Body.Length);
-
-            return buffer;
+            return bytes;
         }
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             packet = null;
+            consumedBytes = 0;
             if (buffer.Count < SizeToInt)
             {
                 return false;
@@ -57,17 +53,17 @@ namespace DignusEchoServer.Serializer
                 return false;
             }
 
-            if (buffer.TryRead(out _, SizeToInt) == false)
+            if (buffer.TryReadBytes(out _, SizeToInt) == false)
             {
                 return false;
             }
 
-            if (buffer.TryRead(out byte[] bodyBytes, bodySize) == false)
+            if (buffer.TrySlice(out packet, bodySize) == false)
             {
                 return false;
             }
 
-            packet = bodyBytes;
+            consumedBytes = bodySize;
 
             return true;
         }

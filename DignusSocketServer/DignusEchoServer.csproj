@@ -9,12 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Properties\**" />
-    <EmbeddedResource Remove="Properties\**" />
-    <None Remove="Properties\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Dignus">
       <HintPath>..\Dll\Dignus.dll</HintPath>
     </Reference>

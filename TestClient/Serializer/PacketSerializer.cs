@@ -41,9 +41,10 @@ namespace EchoClient.Serializer
             ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
         }
 
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             packet = null;
+            consumedBytes = 0;
             if (buffer.Count < SizeToInt)
             {
                 return false;
@@ -51,23 +52,25 @@ namespace EchoClient.Serializer
 
             var headerBytes = buffer.Peek(SizeToInt);
 
-            var bodySize = BitConverter.ToInt32(headerBytes);
+            consumedBytes = BitConverter.ToInt32(headerBytes);
 
-            if (buffer.Count < bodySize + SizeToInt)
+            if (buffer.Count < consumedBytes + SizeToInt)
             {
+                consumedBytes = 0;
                 return false;
             }
 
             if (buffer.TryReadBytes(out _, SizeToInt) == false)
             {
+                consumedBytes = 0;
                 return false;
             }
 
-            if (buffer.TryReadBytes(out byte[] body, bodySize) == false)
+            if (buffer.TrySlice(out packet, consumedBytes) == false)
             {
+                consumedBytes = 0;
                 return false;
             }
-            packet = body;
             return true;
         }
     }

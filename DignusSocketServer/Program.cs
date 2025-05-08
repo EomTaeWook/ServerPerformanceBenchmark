@@ -19,7 +19,7 @@ namespace DignusEchoServer
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
-            var sessionInitializer = new SessionConfiguration(SessionSetupFactory);
+            var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
 
             EchoServer echoServer = new(sessionInitializer);
             echoServer.Start(5000);

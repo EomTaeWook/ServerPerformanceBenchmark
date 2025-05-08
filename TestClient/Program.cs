@@ -45,8 +45,8 @@ namespace EchoClient
                 try
                 {
                     client.Connect("127.0.0.1", 5000);
-                    client.SendMessage(Consts.Message, 1000);
                     clients.Add(client);
+                    client.SendMessage(Consts.Message, 1000);
                 }
                 catch (Exception ex)
                 {
@@ -105,8 +105,8 @@ namespace EchoClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-            //SingleBechmark();
-            ServerBechmark();
+            SingleBechmark();
+            //ServerBechmark();
 
             Console.ReadLine();
         }

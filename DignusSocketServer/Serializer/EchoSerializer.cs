@@ -15,21 +15,22 @@ namespace DignusEchoServer.Serializer
             }
             return sendPacket.Body;
         }
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
-        {
-            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count))
-            {
-                packet = bytes;
-                return true;
-            }
-            packet = null;
-            return false;
-        }
-        private int count;
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             //Console.WriteLine($"session : {session.Id}, packet : {packet.Count} {count++}");
             session.Send(packet);
+        }
+
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
+        {
+            consumedBytes = buffer.Count;
+            if (buffer.TrySlice(out packet, consumedBytes))
+            {
+                return true;
+            }
+            packet = null;
+            consumedBytes = 0;
+            return false;
         }
     }
 }

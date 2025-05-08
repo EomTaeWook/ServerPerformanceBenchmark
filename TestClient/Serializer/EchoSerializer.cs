@@ -53,14 +53,15 @@ namespace EchoClient.Serializer
             _session = session;
         }
 
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
-            if (buffer.TryReadBytes(out byte[] body, buffer.Count) == false)
+            consumedBytes = buffer.Count;
+            if(buffer.TrySlice(out packet, consumedBytes) == true)
             {
-                packet = null;
-                return false;
+                return true;
             }
-            packet = body;
+            packet = null;
+            consumedBytes = 0;
             return true;
         }
     }
