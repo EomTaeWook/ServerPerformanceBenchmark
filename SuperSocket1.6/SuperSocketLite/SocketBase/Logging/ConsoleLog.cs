@@ -32,34 +32,34 @@ public class ConsoleLog : ILog
 
     public bool IsDebugEnabled
     {
-        get { return true; }
+        get { return false; }
     }
 
     public bool IsErrorEnabled
     {
-        get { return true; }
+        get { return false; }
     }
 
     public bool IsFatalEnabled
     {
-        get { return true; }
+        get { return false; }
     }
 
     public bool IsInfoEnabled
     {
-        get { return true; }
+        get { return false; }
     }
 
     public bool IsWarnEnabled
     {
-        get { return true; }
+        get { return false; }
     }
 
     public void Debug(string message)
     {
         Console.WriteLine(m_MessageTemplate, m_Name, m_Debug, message);
-    }         
-    
+    }
+
     public void Error(string message)
     {
         Console.WriteLine(m_MessageTemplate, m_Name, m_Error, message);
@@ -69,7 +69,7 @@ public class ConsoleLog : ILog
     {
         Console.WriteLine(m_MessageTemplate, m_Name, m_Error, message + Environment.NewLine + exception.Message + exception.StackTrace);
     }
-    
+
     public void Fatal(string message)
     {
         Console.WriteLine(m_MessageTemplate, m_Name, m_Fatal, message);
@@ -84,12 +84,12 @@ public class ConsoleLog : ILog
     {
         Console.WriteLine(m_MessageTemplate, m_Name, m_Info, message);
     }
-                     
+
     public void Warn(string message)
     {
         Console.WriteLine(m_MessageTemplate, m_Name, m_Warn, message);
     }
 
-  
-    
+
+
 }

@@ -18,13 +18,13 @@ namespace DignusEchoServer.Handler
         public void Process(EchoMessage echo)
         {
             var body = JsonSerializer.Serialize(echo);
-            _session.Send(new Packet((int)SCProtocol.EchoMessageResponse, body));
+            _session.TrySend(new Packet((int)SCProtocol.EchoMessageResponse, body));
         }
 
         public void OtherMessage(OtherMessage otherMessage)
         {
             var body = JsonSerializer.Serialize(otherMessage);
-            _session.Send(new Packet((int)SCProtocol.OtherMessageResponse, body));
+            _session.TrySend(new Packet((int)SCProtocol.OtherMessageResponse, body));
         }
 
         public void SetSession(ISession session)

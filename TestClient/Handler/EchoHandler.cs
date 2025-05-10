@@ -59,7 +59,7 @@ namespace EchoClient.Handler
             });
 
             _lastSendTime = DateTime.UtcNow;
-            session.Send(new Packet((int)CSProtocol.EchoMessage, body));
+            session.TrySend(new Packet((int)CSProtocol.EchoMessage, body));
         }
         public void SetSession(ISession session)
         {

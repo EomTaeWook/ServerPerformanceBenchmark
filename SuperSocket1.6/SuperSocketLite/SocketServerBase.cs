@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SuperSocketLite.Common;
+using SuperSocketLite.SocketBase;
+using SuperSocketLite.SocketBase.Logging;
+using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Security.Authentication;
-using SuperSocketLite.Common;
-using SuperSocketLite.SocketBase;
-using SuperSocketLite.SocketBase.Logging;
 
 
 namespace SuperSocketLite.SocketEngine;
@@ -72,17 +72,17 @@ abstract class SocketServerBase : ISocketServer, IDisposable
             {
                 Listeners.Add(listener);
 
-                if (log.IsDebugEnabled)
-                {
-                    log.Debug($"Listener ({listener.EndPoint}) was started");
-                }
+                //if (log.IsDebugEnabled)
+                //{
+                //    log.Debug($"Listener ({listener.EndPoint}) was started");
+                //}
             }
             else //If one listener failed to start, stop started listeners
             {
-                if (log.IsDebugEnabled)
-                {
-                    log.Debug($"Listener ({listener.EndPoint}) failed to start");
-                }
+                //if (log.IsDebugEnabled)
+                //{
+                //    log.Debug($"Listener ({listener.EndPoint}) failed to start");
+                //}
 
                 for (var j = 0; j < Listeners.Count; j++)
                 {
@@ -104,7 +104,7 @@ abstract class SocketServerBase : ISocketServer, IDisposable
     {
         var logger = this.AppServer.Logger;
 
-        if(!logger.IsErrorEnabled)
+        if (!logger.IsErrorEnabled)
             return;
 
         logger.Error(string.Format("Listener ({0}) error: {1}", listener.EndPoint, e.Message), e);

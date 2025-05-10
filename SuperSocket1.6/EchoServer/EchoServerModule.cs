@@ -28,10 +28,10 @@ internal class EchoServerModule : AppServer<EchoNetworkSession, ByteReqeustInfo>
     private IServerConfig _config;
     private bool _isRun = false;
 
-	/// <summary>
-	/// MainServer 클래스의 새 인스턴스를 초기화합니다.
-	/// </summary>
-	public EchoServerModule()
+    /// <summary>
+    /// MainServer 클래스의 새 인스턴스를 초기화합니다.
+    /// </summary>
+    public EchoServerModule()
         : base(new DefaultReceiveFilterFactory<ByteReceiveFilter, ByteReqeustInfo>())
     {
         NewSessionConnected += new SessionHandler<EchoNetworkSession>(OnConnected);
@@ -45,7 +45,7 @@ internal class EchoServerModule : AppServer<EchoNetworkSession, ByteReqeustInfo>
     private void RegistHandler()
     {
 
-	}
+    }
 
     /// <summary>
     /// 서버 설정을 초기화합니다.
@@ -60,7 +60,8 @@ internal class EchoServerModule : AppServer<EchoNetworkSession, ByteReqeustInfo>
             MaxConnectionNumber = 10000,
             Mode = SocketMode.Tcp,
             Name = option.Name,
-            MaxRequestLength = 8192
+            MaxRequestLength = 8192,
+            ListenBacklog = 200,
         };
     }
 
@@ -71,7 +72,7 @@ internal class EchoServerModule : AppServer<EchoNetworkSession, ByteReqeustInfo>
     {
         try
         {
-            bool isResult = base.Setup(_config, socketServerFactory: new SocketServerFactory());
+            bool isResult = base.Setup(_config, socketServerFactory: new SocketServerFactory(), logFactory: null);
 
             if (isResult == false)
             {

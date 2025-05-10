@@ -40,7 +40,11 @@ namespace EchoClient
 
             Parallel.For(0, 1, (i) =>
             {
-                var client = new ClientModule(new SessionConfiguration(EchoSetupFactory));
+                var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
+
+                sessionConfiguration.SocketOption.SendBufferSize = 65536;
+
+                var client = new ClientModule(sessionConfiguration);
 
                 try
                 {

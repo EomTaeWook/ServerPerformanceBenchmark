@@ -7,6 +7,7 @@ namespace EchoClient
         private long _totalClientCount = 0;
         private long _totalReceivedCount = 0;
         private long _totalBytes = 0;
+        private long _totalSendCount = 0;
         public double MaxRttMs { get; private set; } = -1;
         public double MinRttMs { get; private set; } = 999999;
 
@@ -21,6 +22,10 @@ namespace EchoClient
         public void AddTotalBytes(long totalBytes)
         {
             Interlocked.Add(ref _totalBytes, totalBytes);
+        }
+        public void AddTotalSendCount(long sendCount)
+        {
+            Interlocked.Add(ref _totalSendCount, sendCount);
         }
         public void AddClientCount(long count)
         {
@@ -80,8 +85,10 @@ namespace EchoClient
 
             var totalMessage = _totalBytes / Consts.Message.Length;
             Console.WriteLine($"Total Message: {totalMessage:N0}");
+
             Console.WriteLine($"Data Throughput: {(_totalBytes / (1024.0 * 1024.0)) / totalSeconds:F2} MiB/s");
             Console.WriteLine($"Message Throughput: {totalMessage / totalSeconds:N0} msg/s");
+
         }
 
 

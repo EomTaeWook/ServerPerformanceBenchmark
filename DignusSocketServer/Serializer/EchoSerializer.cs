@@ -18,19 +18,27 @@ namespace DignusEchoServer.Serializer
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             //Console.WriteLine($"session : {session.Id}, packet : {packet.Count} {count++}");
-            session.Send(packet);
+            //session.Send(packet);
+            if (session.TrySend(packet) == false)
+            {
+                Console.WriteLine("failed to send");
+            }
         }
 
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             consumedBytes = buffer.Count;
-            if (buffer.TrySlice(out packet, consumedBytes))
-            {
-                return true;
-            }
+            return buffer.TrySlice(out packet, consumedBytes);
+        }
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        {
             packet = null;
-            consumedBytes = 0;
-            return false;
+            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count) == false)
+            {
+                return false;
+            }
+            packet = bytes;
+            return true;
         }
     }
 }

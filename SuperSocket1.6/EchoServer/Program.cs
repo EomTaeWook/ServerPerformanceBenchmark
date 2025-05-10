@@ -17,11 +17,12 @@ class Program
 
         // 서버를 생성하고 초기화한다.
         var server = new EchoServerModule();
-        server.InitConfig(new ServerOption() 
+        server.InitConfig(new ServerOption()
         {
             Port = 5000,
             Name = "localhost",
-            
+            MaxConnectionNumber = 1000
+
         });
         server.CreateServer();
 
@@ -38,7 +39,7 @@ class Program
             Console.WriteLine("서버 네트워크 시작 실패");
             return;
         }
-                    
+
 
         Console.WriteLine("key를 누르면 종료한다....");
         Console.ReadKey();
@@ -51,20 +52,20 @@ class Program
         var option = new ServerOption
         {
             Port = 5000,
-            MaxConnectionNumber = 99999,
+            MaxConnectionNumber = 1000,
             Name = "EchoServer",
         };
 
         return option;
-    }               
+    }
 
 }
 
 public class ServerOption
 {
-	public int Port { get; set; } = 5000;
+    public int Port { get; set; } = 5000;
 
-    public int MaxConnectionNumber { get; set; } = 0;
+    public int MaxConnectionNumber { get; set; } = 1000;
 
-    public string Name { get; set; }        
+    public string Name { get; set; }
 }

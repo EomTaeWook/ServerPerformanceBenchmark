@@ -1,4 +1,9 @@
-﻿using System;
+﻿using SuperSocketLite.Common;
+using SuperSocketLite.SocketBase.Config;
+using SuperSocketLite.SocketBase.Logging;
+using SuperSocketLite.SocketBase.Protocol;
+using SuperSocketLite.SocketBase.Security;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,11 +14,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using SuperSocketLite.Common;
-using SuperSocketLite.SocketBase.Config;
-using SuperSocketLite.SocketBase.Logging;
-using SuperSocketLite.SocketBase.Protocol;
-using SuperSocketLite.SocketBase.Security;
 
 
 namespace SuperSocketLite.SocketBase;
@@ -79,7 +79,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     {
         get { return this.ReceiveFilterFactory; }
     }
-      
+
 
     private ISocketServerFactory m_SocketServerFactory;
 
@@ -97,7 +97,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     /// Gets the logger assosiated with this object.
     /// </summary>
     public ILog Logger { get; private set; }
-            
+
     private static bool m_ThreadPoolConfigured = false;
 
     private List<IConnectionFilter> m_ConnectionFilters;
@@ -168,7 +168,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
         this.ReceiveFilterFactory = receiveFilterFactory;
     }
 
-            
+
     /// <summary>
     /// Setups the specified root config.
     /// </summary>
@@ -216,7 +216,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
 
         if (socketServerFactory == null)
         {
-//                var socketServerFactoryType = Type.GetType("SuperSocket.SocketEngine.SocketServerFactory, SuperSocket.SocketEngine", true);
+            //                var socketServerFactoryType = Type.GetType("SuperSocket.SocketEngine.SocketServerFactory, SuperSocket.SocketEngine", true);
             var socketServerFactoryType = Type.GetType("SuperSocket.SocketEngine.SocketServerFactory, SuperSocketLite", true);
             socketServerFactory = (ISocketServerFactory)Activator.CreateInstance(socketServerFactoryType);
         }
@@ -242,7 +242,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
 
             m_ConnectionFilters.AddRange(connectionFilters);
         }
-         
+
         return true;
     }
 
@@ -253,7 +253,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
 
         if (!SetupListeners(config))
             return false;
-                                
+
         return true;
     }
 
@@ -288,7 +288,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
 
             Config = plainConfig;
         }
-        
+
         return SetupSocketServer();
     }
 
@@ -377,16 +377,16 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     public bool Setup(string ip, int port, ISocketServerFactory socketServerFactory = null, IReceiveFilterFactory<TRequestInfo> receiveFilterFactory = null, ILogFactory logFactory = null, IEnumerable<IConnectionFilter> connectionFilters = null)
     {
         return Setup(new ServerConfig
-                        {
-                            Ip = ip,
-                            Port = port
-                        },
+        {
+            Ip = ip,
+            Port = port
+        },
                       socketServerFactory,
                       receiveFilterFactory,
                       logFactory,
                       connectionFilters);
     }
-           
+
     private bool SetupLogFactory(ILogFactory logFactory)
     {
         if (logFactory != null)
@@ -448,14 +448,14 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
             {
                 Certificate = certificate;
             }
-            else if(BasicSecurity != SslProtocols.None)
+            else if (BasicSecurity != SslProtocols.None)
             {
                 if (Logger.IsErrorEnabled)
                     Logger.Error("Certificate is required in this security mode!");
 
                 return false;
             }
-            
+
         }
         catch (Exception e)
         {
@@ -539,7 +539,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
         else if ("IPv6Any".Equals(ip, StringComparison.OrdinalIgnoreCase))
             return IPAddress.IPv6Any;
         else
-           return IPAddress.Parse(ip);
+            return IPAddress.Parse(ip);
     }
 
     /// <summary>
@@ -690,7 +690,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
 
         StartedTime = DateTime.Now;
         m_StateCode = ServerStateConst.Running;
-                    
+
         try
         {
             //Will be removed in the next version
@@ -757,7 +757,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
         m_StateCode = ServerStateConst.NotStarted;
 
         OnStopped();
-                    
+
         if (Logger.IsInfoEnabled)
             Logger.Info(string.Format("The server instance {0} has been stopped!", Name));
     }
@@ -813,7 +813,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     /// <param name="session">The session.</param>
     /// <param name="requestInfo">The request info.</param>
     protected virtual void ExecuteCommand(TAppSession session, TRequestInfo requestInfo)
-    {            
+    {
         session.CurrentCommand = requestInfo.Key;
 
         try
@@ -905,7 +905,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
             return NullAppSession;
 
         var appSession = CreateAppSession(socketSession);
-        
+
         appSession.Initialize(this, socketSession);
 
         return appSession;
@@ -936,7 +936,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
         appSession.SocketSession.Closed += OnSocketSessionClosed;
 
         //if (Config.LogBasicSessionActivity && Logger.IsInfoEnabled)
-            //Logger.Info(session, "A new session connected!");
+        //Logger.Info(session, "A new session connected!");
 
         OnNewSessionConnected(appSession);
         return true;
@@ -977,7 +977,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
             return;
         }
 
-        Task.Run(() => handler(session));            
+        Task.Run(() => handler(session));
         //var handler = m_NewSessionConnected;
         //if (handler == null)
         //    return;
@@ -1017,7 +1017,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     {
         //Even if LogBasicSessionActivity is false, we also log the unexpected closing because the close reason probably be useful
         //if (Logger.IsInfoEnabled && (Config.LogBasicSessionActivity || (reason != CloseReason.ServerClosing && reason != CloseReason.ClientClosing && reason != CloseReason.ServerShutdown && reason != CloseReason.SocketError)))
-            //Logger.Info(session, string.Format("This session was closed for {0}!", reason));
+        //Logger.Info(session, string.Format("This session was closed for {0}!", reason));
 
         var appSession = session.AppSession as TAppSession;
         appSession.Connected = false;
@@ -1045,7 +1045,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
 
         if (handler != null)
         {
-            Task.Run(() => handler(session, reason)); 
+            Task.Run(() => handler(session, reason));
         }
 
         session.OnSessionClosed(reason);
@@ -1119,11 +1119,11 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     /// <returns></returns>
     public string GetFilePath(string relativeFilePath)
     {
-        var filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeFilePath);                        
+        var filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeFilePath);
         return filePath;
     }
 
-    
+
 
     /// <summary>
     /// Connect the remote endpoint actively.
@@ -1153,9 +1153,9 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
         return ((IActiveConnector)this).ActiveConnect(targetEndPoint, null);
     }
 
-    
 
-    
+
+
     /// <summary>
     /// Transfers the system message
     /// </summary>
@@ -1174,7 +1174,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
     protected virtual void OnSystemMessageReceived(string messageType, object messageData)
     {
     }
-           
+
     /// <summary>
     /// Releases unmanaged and - optionally - managed resources
     /// </summary>
@@ -1184,7 +1184,7 @@ public abstract partial class AppServerBase<TAppSession, TRequestInfo> : IAppSer
             Stop();
     }
 
-    
+
 
 
     partial void SetDefaultCulture(IRootConfig rootConfig, IServerConfig config)

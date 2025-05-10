@@ -34,7 +34,37 @@ namespace DignusEchoServer.Serializer
 
             return bytes;
         }
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        {
+            packet = null;
+            if (buffer.Count < SizeToInt)
+            {
+                return false;
+            }
 
+            var headerBytes = buffer.Peek(SizeToInt);
+
+            var bodySize = BitConverter.ToInt32(headerBytes);
+
+            if (buffer.Count < bodySize + SizeToInt)
+            {
+                return false;
+            }
+
+            if (buffer.TryRead(out _, SizeToInt) == false)
+            {
+                return false;
+            }
+
+            if (buffer.TryRead(out byte[] bodyBytes, bodySize) == false)
+            {
+                return false;
+            }
+
+            packet = bodyBytes;
+
+            return true;
+        }
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             packet = null;

@@ -1,42 +1,46 @@
 ﻿using Dignus.Collections;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using EchoClient.Extensions;
 using EchoClient.Packets;
 
 namespace EchoClient.Serializer
 {
     internal class EchoSerializer() : IPacketProcessor, IPacketSerializer, ISessionComponent
     {
-        private long _receivedCount;
         private long _totalBytes = 0;
         private double _maxRttMs = -1;
         private double _minRttMs = double.MaxValue;
         private DateTime _lastSendTime = DateTime.MinValue;
         private ISession _session;
         private int _receivedSize = 0;
+
+        private int _sendCount = 0;
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
             _receivedSize += packet.Count;
             while (_receivedSize >= Consts.Message.Length)
             {
-                //session.Send(Consts.Message);
-                Task.Factory.StartNew(() =>
-                {
-                    session.Send(Consts.Message);
-
-                }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
+                //try
+                //{
+                //    session.Send(Consts.Message);
+                //}
+                //catch (Exception ex)
+                //{
+                //    LogHelper.Error(ex);
+                //}
+                session.SendAsync(Consts.Message);
                 _receivedSize -= Consts.Message.Length;
             }
             Interlocked.Add(ref _totalBytes, packet.Count);
         }
         public void Dispose()
         {
-            _session.Send(Consts.Message);
-            Monitor.Instance.AddReceivedCount(_receivedCount);
             Monitor.Instance.SetMaxRttMs(_maxRttMs);
             Monitor.Instance.SetMinRttMs(_minRttMs);
             Monitor.Instance.AddClientCount(1);
             Monitor.Instance.AddTotalBytes(_totalBytes);
+            Monitor.Instance.AddTotalSendCount(_sendCount);
         }
 
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
@@ -56,12 +60,17 @@ namespace EchoClient.Serializer
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             consumedBytes = buffer.Count;
-            if(buffer.TrySlice(out packet, consumedBytes) == true)
+            return buffer.TrySlice(out packet, consumedBytes);
+        }
+
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        {
+            if (buffer.TryReadBytes(out byte[] body, buffer.Count) == false)
             {
-                return true;
+                packet = null;
+                return false;
             }
-            packet = null;
-            consumedBytes = 0;
+            packet = body;
             return true;
         }
     }
