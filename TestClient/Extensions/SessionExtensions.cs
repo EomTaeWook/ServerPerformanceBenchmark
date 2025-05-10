@@ -14,7 +14,7 @@ namespace EchoClient.Extensions
                 }
                 if (session.TrySend(data) == false)
                 {
-                    Console.WriteLine("failed to send");
+                    //Console.WriteLine("failed to send");
                     session.SendAsync(data);
                 }
             }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
