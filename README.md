@@ -45,7 +45,7 @@ https://github.com/EomTaeWook/DignusSocketServer
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,543,785 | 5,226,484 | 3,127,793 |
+| Total Received | 6,593,243 | 5,226,484 | 3,127,793 |
 | Max RTT (ms) | 40.56 | 136.36 | 146.61 |
 | Min RTT (ms) | 0.02 | 0.04 | 0.05 |
 
@@ -56,7 +56,7 @@ https://github.com/EomTaeWook/DignusSocketServer
 | 항목 | DignusSocketServer (초기) | DignusSocketServer (웜업 후) | DotNetty (초기) | DotNetty (웜업 후) | SuperSocket 2.0 (초기) | SuperSocket 2.0 (웜업 후) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 5,984,326 | 6,543,785 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
+| Total Received | 5,984,326 | 6,593,243 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
 | Max RTT (ms) | 73.02 | 40.56 | 140.65 | 136.36 | 128.70 | 146.61 |
 | Min RTT (ms) | 0.03 | 0.02 | 0.04 | 0.04 | 0.05 | 0.05 |
 
@@ -137,7 +137,7 @@ https://github.com/EomTaeWook/DignusSocketServer
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,543,785 | 5,226,484 | 3,127,793 |
+| Total Received | 6,593,243 | 5,226,484 | 3,127,793 |
 | Max RTT (ms) | 40.56 | 136.36 | 146.61 |
 | Min RTT (ms) | 0.02 | 0.04 | 0.05 |
 
@@ -148,7 +148,7 @@ https://github.com/EomTaeWook/DignusSocketServer
 | Item | DignusSocketServer (Cold) | DignusSocketServer (Warm-up) | DotNetty (Cold) | DotNetty (Warm-up) | SuperSocket 2.0 (Cold) | SuperSocket 2.0 (Warm-up) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 5,984,326 | 6,543,785 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
+| Total Received | 5,984,326 | 6,593,243 | 4,946,353 | 5,226,484 | 3,170,083 | 3,127,793 |
 | Max RTT (ms) | 73.02 | 40.56 | 140.65 | 136.36 | 128.70 | 146.61 |
 | Min RTT (ms) | 0.03 | 0.02 | 0.04 | 0.04 | 0.05 | 0.05 |
 
