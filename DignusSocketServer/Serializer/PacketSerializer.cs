@@ -9,14 +9,14 @@ namespace DignusEchoServer.Serializer
 {
     internal class PacketSerializer(EchoHandler echoHandler) : IPacketProcessor, IPacketSerializer
     {
+        private const int HeaderSize = sizeof(int) * 2;
         private const int SizeToInt = sizeof(int);
 
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
-            var protocol = BitConverter.ToInt32(packet.Array, 0);
-
-            var bodyString = Encoding.UTF8.GetString(packet.Array, 4, packet.Array.Length - 4);
-
+            var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
+            var size = packet.Array.Length - packet.Offset - SizeToInt;
+            var bodyString = Encoding.UTF8.GetString(packet.Array, packet.Offset + SizeToInt, size);
             ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
         }
 
@@ -26,44 +26,14 @@ namespace DignusEchoServer.Serializer
             {
                 throw new InvalidOperationException("Invalid packet type");
             }
+            var packetSize = sendPacket.GetLength();
+            byte[] sendBuffer = new byte[packetSize + SizeToInt];
 
-            byte[] bytes = new byte[sendPacket.GetLength() + sizeof(int)];
-            var size = sendPacket.GetLength();
-            Buffer.BlockCopy(BitConverter.GetBytes(size), 0, bytes, 0, 4);
-            Buffer.BlockCopy(sendPacket.Body, 0, bytes, 4, size);
+            Buffer.BlockCopy(BitConverter.GetBytes(packetSize), 0, sendBuffer, 0, SizeToInt);
+            Buffer.BlockCopy(BitConverter.GetBytes(sendPacket.Protocol), 0, sendBuffer, SizeToInt, SizeToInt);
+            Buffer.BlockCopy(sendPacket.Body, 0, sendBuffer, HeaderSize, sendPacket.Body.Length);
 
-            return bytes;
-        }
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
-        {
-            packet = null;
-            if (buffer.Count < SizeToInt)
-            {
-                return false;
-            }
-
-            var headerBytes = buffer.Peek(SizeToInt);
-
-            var bodySize = BitConverter.ToInt32(headerBytes);
-
-            if (buffer.Count < bodySize + SizeToInt)
-            {
-                return false;
-            }
-
-            if (buffer.TryRead(out _, SizeToInt) == false)
-            {
-                return false;
-            }
-
-            if (buffer.TryRead(out byte[] bodyBytes, bodySize) == false)
-            {
-                return false;
-            }
-
-            packet = bodyBytes;
-
-            return true;
+            return sendBuffer;
         }
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {

@@ -1,7 +1,6 @@
 ﻿using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
 using DotNettyServer.Packets;
-using System;
 using System.Text;
 using System.Text.Json;
 
@@ -12,46 +11,44 @@ namespace DotNettyServer.Handler
         public override void ChannelRead(IChannelHandlerContext ctx, object msg)
         {
             var buffer = (IByteBuffer)msg;
-            _ = ctx.WriteAndFlushAsync(buffer);
-            //var buffer = (IByteBuffer)msg;
-            //if (buffer.ReadableBytes < 4)
-            //{
-            //    ctx.FireChannelRead(msg);
-            //    return;
-            //}
+            if (buffer.ReadableBytes < 4)
+            {
+                ctx.FireChannelRead(msg);
+                return;
+            }
 
-            //var bodySize = buffer.GetIntLE(buffer.ReaderIndex);
+            var bodySize = buffer.GetIntLE(buffer.ReaderIndex);
 
-            //if (buffer.ReadableBytes - 4 < bodySize)
-            //{
-            //    ctx.FireChannelRead(msg);
-            //    return;
-            //}
-            //var protocol = buffer.GetIntLE(4);
+            if (buffer.ReadableBytes - 4 < bodySize)
+            {
+                ctx.FireChannelRead(msg);
+                return;
+            }
+            var protocol = buffer.GetIntLE(4);
 
-            //var body = buffer.GetString(8, bodySize - 4, Encoding.UTF8);
+            var body = buffer.GetString(8, bodySize - 4, Encoding.UTF8);
 
-            //buffer.Release();
+            buffer.Release();
 
-            //switch (protocol)
-            //{
-            //    case 0:
-            //        Process(ctx, Deserialize<EchoMessage>(body));
-            //        break;
-            //}
+            switch (protocol)
+            {
+                case 0:
+                    Process(ctx, Deserialize<EchoMessage>(body));
+                    break;
+            }
         }
 
-        //private T Deserialize<T>(string jsonBody)
-        //{
-        //    return JsonSerializer.Deserialize<T>(jsonBody);
-        //}
+        private T Deserialize<T>(string jsonBody)
+        {
+            return JsonSerializer.Deserialize<T>(jsonBody);
+        }
 
-        //private void Process(IChannelHandlerContext ctx, EchoMessage echoMessage)
-        //{
-        //    var body = JsonSerializer.Serialize(echoMessage);
-        //    var packet = new Packet(0, body);
-        //    var buffer = packet.ToBytes();
-        //    _ = ctx.WriteAndFlushAsync(buffer);
-        //}
+        private void Process(IChannelHandlerContext ctx, EchoMessage echoMessage)
+        {
+            var body = JsonSerializer.Serialize(echoMessage);
+            var packet = new Packet(0, body);
+            var buffer = packet.ToBytes();
+            _ = ctx.WriteAndFlushAsync(buffer);
+        }
     }
 }

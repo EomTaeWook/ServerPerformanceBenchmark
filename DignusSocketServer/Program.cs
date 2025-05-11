@@ -19,7 +19,7 @@ namespace DignusEchoServer
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
-            var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
+            var sessionInitializer = new SessionConfiguration(PacketSetupFactory);
 
             EchoServer echoServer = new(sessionInitializer);
             echoServer.Start(5000);
@@ -34,7 +34,7 @@ namespace DignusEchoServer
                     echoSerializer,
                     []);
         }
-        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> SessionSetupFactory()
+        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> PacketSetupFactory()
         {
             EchoHandler handler = new();
 

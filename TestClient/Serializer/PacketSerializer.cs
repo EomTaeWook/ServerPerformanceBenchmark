@@ -10,6 +10,7 @@ namespace EchoClient.Serializer
     internal class PacketSerializer(EchoHandler echoHandler) : IPacketProcessor, IPacketSerializer
     {
         private const int SizeToInt = sizeof(int);
+        private const int HeaderSize = sizeof(int) * 2;
 
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
@@ -17,58 +18,22 @@ namespace EchoClient.Serializer
             {
                 throw new InvalidCastException(nameof(packet));
             }
+            var packetSize = sendPacket.GetLength();
+            byte[] sendBuffer = new byte[SizeToInt + packetSize];
 
-            byte[] buffer = new byte[SizeToInt + sendPacket.GetLength()];
-
-            var bodySizeBytes = BitConverter.GetBytes(sendPacket.GetLength());
-
-            Array.Copy(bodySizeBytes, buffer, SizeToInt);
-            var protocolBytes = BitConverter.GetBytes(sendPacket.Protocol);
-
-            Array.Copy(protocolBytes, 0, buffer, SizeToInt, SizeToInt);
-
-            Array.Copy(sendPacket.Body, 0, buffer, SizeToInt + SizeToInt, sendPacket.Body.Length);
-
-            return buffer;
+            Buffer.BlockCopy(BitConverter.GetBytes(packetSize), 0, sendBuffer, 0, SizeToInt);
+            Buffer.BlockCopy(BitConverter.GetBytes(sendPacket.Protocol), 0, sendBuffer, SizeToInt, SizeToInt);
+            Buffer.BlockCopy(sendPacket.Body, 0, sendBuffer, HeaderSize, sendPacket.Body.Length);
+            return sendBuffer;
         }
 
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
-            var protocol = BitConverter.ToInt32(packet.Array, 0);
-
-            var bodyString = Encoding.UTF8.GetString(packet.Array, 4, packet.Array.Length - 4);
+            var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
+            var size = packet.Array.Length - packet.Offset - SizeToInt;
+            var bodyString = Encoding.UTF8.GetString(packet.Array, packet.Offset + SizeToInt, size);
 
             ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
-        }
-
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
-        {
-            packet = null;
-            if (buffer.Count < SizeToInt)
-            {
-                return false;
-            }
-
-            var headerBytes = buffer.Peek(SizeToInt);
-
-            var bodySize = BitConverter.ToInt32(headerBytes);
-
-            if (buffer.Count < bodySize + SizeToInt)
-            {
-                return false;
-            }
-
-            if (buffer.TryReadBytes(out _, SizeToInt) == false)
-            {
-                return false;
-            }
-
-            if (buffer.TryReadBytes(out byte[] body, bodySize) == false)
-            {
-                return false;
-            }
-            packet = body;
-            return true;
         }
 
         public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)

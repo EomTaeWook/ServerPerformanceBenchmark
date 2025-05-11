@@ -20,7 +20,7 @@ namespace EchoClient.Packets
         }
         public int GetLength()
         {
-            return Body.Length + sizeof(int);
+            return Body.Length + 4;
         }
     }
 }
