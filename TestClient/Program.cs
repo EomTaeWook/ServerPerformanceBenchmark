@@ -99,7 +99,7 @@ namespace EchoClient
             {
                 client.Close();
             }
-            Monitor.Instance.Print("SuperSocket2.0");
+            Monitor.Instance.Print("DignusSocketServer");
         }
         static void Main(string[] args)
         {
