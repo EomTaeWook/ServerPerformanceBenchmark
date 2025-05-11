@@ -30,15 +30,5 @@ namespace DignusEchoServer.Serializer
             consumedBytes = buffer.Count;
             return buffer.TrySlice(out packet, consumedBytes);
         }
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
-        {
-            packet = null;
-            if (buffer.TryReadBytes(out byte[] bytes, buffer.Count) == false)
-            {
-                return false;
-            }
-            packet = bytes;
-            return true;
-        }
     }
 }

@@ -9,7 +9,7 @@ namespace EchoClient
 {
     internal class Program
     {
-        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> SessionSetupFactory()
+        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> PakcetHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
@@ -73,7 +73,7 @@ namespace EchoClient
 
             for (var i = 0; i < 5000; ++i)
             {
-                var client = new ClientModule(new SessionConfiguration(SessionSetupFactory));
+                var client = new ClientModule(new SessionConfiguration(PakcetHandlerSetupFactory));
 
                 try
                 {
