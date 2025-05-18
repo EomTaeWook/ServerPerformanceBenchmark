@@ -1,18 +1,19 @@
 ﻿using Dignus.Collections;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using Dignus.Sockets.Processing;
 using DignusEchoServer.Handler;
 using DignusEchoServer.Packets;
 using System.Text;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class PacketSerializer(EchoHandler echoHandler) : IPacketProcessor, IPacketSerializer
+    internal class PacketSerializer(EchoHandler echoHandler) : SessionPacketProcessorBase, IPacketSerializer
     {
         private const int HeaderSize = sizeof(int) * 2;
         private const int SizeToInt = sizeof(int);
 
-        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
+        public override void ProcessPacket(in ArraySegment<byte> packet)
         {
             var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
             var size = packet.Array.Length - packet.Offset - SizeToInt;
@@ -35,7 +36,7 @@ namespace DignusEchoServer.Serializer
 
             return sendBuffer;
         }
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
+        public override bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             packet = null;
             consumedBytes = 0;

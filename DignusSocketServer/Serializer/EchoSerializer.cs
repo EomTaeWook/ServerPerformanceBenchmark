@@ -5,7 +5,7 @@ using DignusEchoServer.Packets;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class EchoSerializer() : IPacketProcessor, IPacketSerializer
+    internal class EchoSerializer() : ISessionReceiver, IPacketSerializer
     {
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
@@ -15,20 +15,19 @@ namespace DignusEchoServer.Serializer
             }
             return sendPacket.Body;
         }
-        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
+
+        public void OnReceived(ISession session, ArrayQueue<byte> buffer)
         {
-            //Console.WriteLine($"session : {session.Id}, packet : {packet.Count} {count++}");
-            //session.Send(packet);
+            var count = buffer.Count;
+            if (buffer.TrySlice(out var packet, count) == false)
+            {
+                return;
+            }
             if (session.TrySend(packet) == false)
             {
                 Console.WriteLine("failed to send");
             }
-        }
-
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
-        {
-            consumedBytes = buffer.Count;
-            return buffer.TrySlice(out packet, consumedBytes);
+            buffer.Advance(packet.Count);
         }
     }
 }

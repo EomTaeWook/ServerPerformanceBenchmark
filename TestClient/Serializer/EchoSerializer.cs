@@ -3,10 +3,11 @@ using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using EchoClient.Extensions;
 using EchoClient.Packets;
+using System.Net.Sockets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoSerializer() : IPacketProcessor, IPacketSerializer, ISessionComponent
+    internal class EchoSerializer() : ISessionReceiver, IPacketSerializer, ISessionComponent
     {
         private long _totalBytes = 0;
         private double _maxRttMs = -1;
@@ -15,32 +16,12 @@ namespace EchoClient.Serializer
         private ISession _session;
         private int _receivedSize = 0;
 
-        private int _sendCount = 0;
-        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
-        {
-            _receivedSize += packet.Count;
-            while (_receivedSize >= Consts.Message.Length)
-            {
-                //try
-                //{
-                //    session.Send(Consts.Message);
-                //}
-                //catch (Exception ex)
-                //{
-                //    LogHelper.Error(ex);
-                //}
-                session.SendAsync(Consts.Message);
-                _receivedSize -= Consts.Message.Length;
-            }
-            Interlocked.Add(ref _totalBytes, packet.Count);
-        }
         public void Dispose()
         {
             Monitor.Instance.SetMaxRttMs(_maxRttMs);
             Monitor.Instance.SetMinRttMs(_minRttMs);
             Monitor.Instance.AddClientCount(1);
             Monitor.Instance.AddTotalBytes(_totalBytes);
-            Monitor.Instance.AddTotalSendCount(_sendCount);
         }
 
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
@@ -57,21 +38,27 @@ namespace EchoClient.Serializer
             _session = session;
         }
 
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
+        public void OnReceived(ISession session, ArrayQueue<byte> buffer)
         {
-            consumedBytes = buffer.Count;
-            return buffer.TrySlice(out packet, consumedBytes);
-        }
+            var count = buffer.Count;
+            _receivedSize += count;
+            buffer.Advance(count);
 
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
-        {
-            if (buffer.TryReadBytes(out byte[] body, buffer.Count) == false)
+            while (_receivedSize >= Consts.Message.Length)
             {
-                packet = null;
-                return false;
+                //try
+                //{
+                //    session.Send(Consts.Message);
+                //}
+                //catch (Exception ex)
+                //{
+                //    LogHelper.Error(ex);
+                //}
+                session.SendAsync(Consts.Message);
+                _receivedSize -= Consts.Message.Length;
             }
-            packet = body;
-            return true;
+
+            Interlocked.Add(ref _totalBytes, count);
         }
     }
 }

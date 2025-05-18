@@ -20,27 +20,27 @@ namespace DignusEchoServer
             LogBuilder.Build();
 
             var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
-
+            sessionInitializer.SocketOption.SendBufferSize = 65536;
             EchoServer echoServer = new(sessionInitializer);
             echoServer.Start(5000);
             LogHelper.Info($"start server... port : {5000}");
             Console.ReadKey();
         }
-        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> EchoSetupFactory()
+        static Tuple<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>> EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
-            return Tuple.Create<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>>(
                     echoSerializer,
                     echoSerializer,
                     []);
         }
-        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> PacketHandlerSetupFactory()
+        static Tuple<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>> PacketHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>>(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
