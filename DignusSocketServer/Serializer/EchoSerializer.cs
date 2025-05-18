@@ -27,7 +27,7 @@ namespace DignusEchoServer.Serializer
             {
                 Console.WriteLine("failed to send");
             }
-            buffer.Advance(packet.Count);
+            buffer.Advance(count);
         }
     }
 }
