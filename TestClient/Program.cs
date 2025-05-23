@@ -9,22 +9,22 @@ namespace EchoClient
 {
     internal class Program
     {
-        static Tuple<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>> PakcetHandlerSetupFactory()
+        static Tuple<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>> PakcetHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>>(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
         }
-        static Tuple<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>> EchoSetupFactory()
+        static Tuple<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>> EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
 
-            return Tuple.Create<IPacketSerializer, ISessionReceiver, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>>(
                     echoSerializer,
                     echoSerializer,
                     [echoSerializer]);
@@ -42,7 +42,7 @@ namespace EchoClient
             {
                 var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
 
-                sessionConfiguration.SocketOption.SendBufferSize = 65536;
+                sessionConfiguration.SocketOption.SendBufferSize = 65536 * 20;
 
                 var client = new ClientModule(sessionConfiguration);
 
