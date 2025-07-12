@@ -23,7 +23,7 @@ namespace DignusEchoServer.Serializer
             {
                 return;
             }
-            if (session.TrySend(packet) == false)
+            if (session.Send(packet) != SendResult.Success)
             {
                 Console.WriteLine("failed to send");
             }
