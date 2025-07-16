@@ -12,7 +12,7 @@ namespace EchoClient.Extensions
                 {
                     return;
                 }
-                if (session.TrySend(data) == false)
+                if (session.Send(data) != Dignus.Sockets.SendResult.Success)
                 {
                     //Console.WriteLine("failed to send");
                     session.SendAsync(data);
