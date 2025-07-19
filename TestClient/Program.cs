@@ -9,22 +9,22 @@ namespace EchoClient
 {
     internal class Program
     {
-        static Tuple<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>> PakcetHandlerSetupFactory()
+        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> PakcetHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
         }
-        static Tuple<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>> EchoSetupFactory()
+        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
 
-            return Tuple.Create<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
                     echoSerializer,
                     echoSerializer,
                     [echoSerializer]);

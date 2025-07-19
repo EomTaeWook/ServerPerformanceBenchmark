@@ -26,21 +26,21 @@ namespace DignusEchoServer
             LogHelper.Info($"start server... port : {5000}");
             Console.ReadKey();
         }
-        static Tuple<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>> EchoSetupFactory()
+        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
-            return Tuple.Create<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
                     echoSerializer,
                     echoSerializer,
                     []);
         }
-        static Tuple<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>> PacketHandlerSetupFactory()
+        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> PacketHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, ISessionPacketProcessor, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
