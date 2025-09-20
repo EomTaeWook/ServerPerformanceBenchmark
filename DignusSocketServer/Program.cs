@@ -20,7 +20,8 @@ namespace DignusEchoServer
             LogBuilder.Build();
 
             var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
-            sessionInitializer.SocketOption.SendBufferSize = 65536 * 20;
+            sessionInitializer.SocketOption.SendBufferSize = 65536;
+            sessionInitializer.SocketOption.MaxPendingSendBytes = int.MaxValue;
             EchoServer echoServer = new(sessionInitializer);
             echoServer.Start(5000);
             LogHelper.Info($"start server... port : {5000}");
