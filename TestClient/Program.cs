@@ -1,6 +1,5 @@
 ﻿using Dignus.Log;
 using Dignus.Sockets;
-using Dignus.Sockets.Interfaces;
 using EchoClient.Handler;
 using EchoClient.Protocol;
 using EchoClient.Serializer;
@@ -9,22 +8,22 @@ namespace EchoClient
 {
     internal class Program
     {
-        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> PakcetHandlerSetupFactory()
+        static SessionSetup PakcetHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
+            return new SessionSetup(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
         }
-        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> EchoSetupFactory()
+        static SessionSetup EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
 
-            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
+            return new SessionSetup(
                     echoSerializer,
                     echoSerializer,
                     [echoSerializer]);

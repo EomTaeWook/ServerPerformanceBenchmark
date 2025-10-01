@@ -1,6 +1,5 @@
 ﻿using Dignus.Log;
 using Dignus.Sockets;
-using Dignus.Sockets.Interfaces;
 using DignusEchoServer.Handler;
 using DignusEchoServer.Serializer;
 
@@ -27,21 +26,21 @@ namespace DignusEchoServer
             LogHelper.Info($"start server... port : {5000}");
             Console.ReadKey();
         }
-        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> EchoSetupFactory()
+        static SessionSetup EchoSetupFactory()
         {
             EchoSerializer echoSerializer = new();
-            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
+            return new SessionSetup(
                     echoSerializer,
                     echoSerializer,
                     []);
         }
-        static Tuple<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>> PacketHandlerSetupFactory()
+        static SessionSetup PacketHandlerSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, IPacketHandler, ICollection<ISessionComponent>>(
+            return new SessionSetup(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
