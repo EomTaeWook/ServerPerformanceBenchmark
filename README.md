@@ -1,11 +1,5 @@
 # 📈 DignusSocketServer 
 
-고성능 C# 비동기 소켓 서버 프레임워크입니다.
-세션 풀링, 프레이밍 처리, 직렬화/역직렬화 구조 등을 통해 수십만 동시 접속과 수백만 메시지 처리 성능을 지원합니다.
-가볍고 확장 가능하도록 설계되어 있습니다.
-
----
-
 ## 🔥 Performance Benchmark
 
 - Server address: 127.0.0.1
@@ -26,6 +20,12 @@
 ---
 
 ![TopPerformance](Image/Dignus_Performance_47256766msg_1.41GiB.png)
+
+---
+
+고성능 C# 비동기 소켓 서버 프레임워크입니다.
+세션 풀링, 프레이밍 처리, 직렬화/역직렬화 구조 등을 통해 수십만 동시 접속과 수백만 메시지 처리 성능을 지원합니다.
+가볍고 확장 가능하도록 설계되어 있습니다.
 
 ---
 
@@ -114,10 +114,6 @@ Framing logic
 Custom serialization/deserialization architecture
 
 It is designed to be lightweight, efficient, and easily extensible.
-
----
-
-https://github.com/EomTaeWook/DignusSocketServer
 
 ---
 
