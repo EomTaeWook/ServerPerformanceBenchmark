@@ -10,9 +10,9 @@ namespace EchoClient.Serializer
     internal class EchoSerializer() : IPacketHandler, IPacketSerializer, ISessionComponent
     {
         private long _totalBytes = 0;
-        private double _maxRttMs = -1;
-        private double _minRttMs = double.MaxValue;
-        private DateTime _lastSendTime = DateTime.MinValue;
+        private readonly double _maxRttMs = -1;
+        private readonly double _minRttMs = double.MaxValue;
+        private readonly DateTime _lastSendTime = DateTime.MinValue;
         private ISession _session;
         private int _receivedSize = 0;
 
