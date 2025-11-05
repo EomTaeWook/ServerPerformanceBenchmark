@@ -15,19 +15,20 @@ namespace DignusEchoServer.Serializer
             }
             return sendPacket.Body;
         }
-
-        public void OnReceived(ISession session, ArrayQueue<byte> buffer)
+        public Task OnReceivedAsync(ISession session, ArrayQueue<byte> buffer)
         {
             var count = buffer.Count;
             if (buffer.TrySlice(out var packet, count) == false)
             {
-                return;
+                return Task.CompletedTask;
             }
             if (session.Send(packet) != SendResult.Success)
             {
                 Console.WriteLine("failed to send");
             }
+
             buffer.Advance(count);
+            return Task.CompletedTask;
         }
     }
 }

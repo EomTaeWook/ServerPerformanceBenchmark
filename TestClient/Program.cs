@@ -41,7 +41,8 @@ namespace EchoClient
             {
                 var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
 
-                sessionConfiguration.SocketOption.SendBufferSize = 65536 * 20;
+                sessionConfiguration.SocketOption.SendBufferSize = 65536;
+                sessionConfiguration.SocketOption.MaxPendingSendBytes = int.MaxValue;
 
                 var client = new ClientModule(sessionConfiguration);
 
@@ -108,8 +109,8 @@ namespace EchoClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-            //SingleBechmark();
-            ServerBechmark();
+            SingleBechmark();
+            //ServerBechmark();
 
             Console.ReadLine();
         }

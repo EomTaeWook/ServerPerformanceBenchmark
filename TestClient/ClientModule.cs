@@ -23,7 +23,7 @@ namespace EchoClient
             for (int i = 0; i < count; i++)
             {
                 //Send(message);
-                _session.SendAsync(message);
+                _ = _session.SendAsync(message);
             }
         }
 

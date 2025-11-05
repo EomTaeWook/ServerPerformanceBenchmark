@@ -13,12 +13,12 @@ namespace DignusEchoServer.Serializer
         private const int HeaderSize = sizeof(int) * 2;
         private const int SizeToInt = sizeof(int);
 
-        public override void ProcessPacket(in ArraySegment<byte> packet)
+        public override async Task ProcessPacketAsync(ArraySegment<byte> packet)
         {
             var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
             var size = packet.Array.Length - packet.Offset - SizeToInt;
             var bodyString = Encoding.UTF8.GetString(packet.Array, packet.Offset + SizeToInt, size);
-            ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
+            await ProtocolHandlerMapper<EchoHandler, string>.InvokeHandlerAsync(echoHandler, protocol, bodyString);
         }
 
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)

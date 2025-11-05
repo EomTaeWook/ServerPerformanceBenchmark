@@ -28,13 +28,13 @@ namespace EchoClient.Serializer
             return sendBuffer;
         }
 
-        public override void ProcessPacket(in ArraySegment<byte> packet)
+        public async override Task ProcessPacketAsync(ArraySegment<byte> packet)
         {
             var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
             var size = packet.Array.Length - packet.Offset - SizeToInt;
             var bodyString = Encoding.UTF8.GetString(packet.Array, packet.Offset + SizeToInt, size);
 
-            ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
+            await ProtocolHandlerMapper<EchoHandler, string>.InvokeHandlerAsync(echoHandler, protocol, bodyString);
         }
 
         public override bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)

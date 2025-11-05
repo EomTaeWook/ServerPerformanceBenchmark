@@ -3,7 +3,6 @@ using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using EchoClient.Extensions;
 using EchoClient.Packets;
-using System.Net.Sockets;
 
 namespace EchoClient.Serializer
 {
@@ -38,7 +37,7 @@ namespace EchoClient.Serializer
             _session = session;
         }
 
-        public void OnReceived(ISession session, ArrayQueue<byte> buffer)
+        public Task OnReceivedAsync(ISession session, ArrayQueue<byte> buffer)
         {
             var count = buffer.Count;
             _receivedSize += count;
@@ -46,18 +45,12 @@ namespace EchoClient.Serializer
 
             while (_receivedSize >= Consts.Message.Length)
             {
-                //try
-                //{
-                //    session.Send(Consts.Message);
-                //}
-                //catch (Exception ex)
-                //{
-                //    LogHelper.Error(ex);
-                //}
-                session.SendAsync(Consts.Message);
+                _ = session.SendAsync(Consts.Message);
+
                 _receivedSize -= Consts.Message.Length;
             }
             _totalBytes += count;
+            return Task.CompletedTask;
         }
     }
 }
