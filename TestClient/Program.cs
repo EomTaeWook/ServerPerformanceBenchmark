@@ -21,7 +21,7 @@ namespace EchoClient
         }
         static SessionSetup EchoSetupFactory()
         {
-            EchoSerializer echoSerializer = new();
+            EchoPacketHandler echoSerializer = new();
 
             return new SessionSetup(
                     echoSerializer,

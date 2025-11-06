@@ -1,11 +1,12 @@
 ﻿using Dignus.Collections;
+using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using DignusEchoServer.Packets;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class EchoSerializer() : IPacketHandler, IPacketSerializer
+    internal class EchoPacketHandler() : IPacketHandler, IPacketSerializer
     {
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
@@ -18,16 +19,16 @@ namespace DignusEchoServer.Serializer
         public Task OnReceivedAsync(ISession session, ArrayQueue<byte> buffer)
         {
             var count = buffer.Count;
-            if (buffer.TrySlice(out var packet, count) == false)
+            if (!buffer.TrySlice(out var packet, count))
             {
                 return Task.CompletedTask;
             }
-            if (session.Send(packet) != SendResult.Success)
-            {
-                Console.WriteLine("failed to send");
-            }
-
             buffer.Advance(count);
+            var result = session.Send(packet);
+            if (result != SendResult.Success)
+            {
+                LogHelper.Error($"{result}");
+            }
             return Task.CompletedTask;
         }
     }

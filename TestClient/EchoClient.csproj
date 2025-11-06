@@ -14,14 +14,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dignus.Log" Version="1.0.4" />
-    <PackageReference Include="Dignus.Sockets" Version="1.0.7" />
+    <Reference Include="Dignus">
+      <HintPath>..\Dlls\Dignus.dll</HintPath>
+    </Reference>
+    <Reference Include="Dignus.Log">
+      <HintPath>..\Dlls\Dignus.Log.dll</HintPath>
+    </Reference>
+    <Reference Include="Dignus.Sockets">
+      <HintPath>..\Dlls\Dignus.Sockets.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="DignusLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

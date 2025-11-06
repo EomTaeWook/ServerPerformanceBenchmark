@@ -1,19 +1,18 @@
 ﻿using Dignus.Collections;
+using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
-using EchoClient.Extensions;
 using EchoClient.Packets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoSerializer() : IPacketHandler, IPacketSerializer, ISessionComponent
+    internal class EchoPacketHandler() : IPacketHandler, IPacketSerializer, ISessionComponent
     {
         private long _totalBytes = 0;
         private readonly double _maxRttMs = -1;
         private readonly double _minRttMs = double.MaxValue;
         private readonly DateTime _lastSendTime = DateTime.MinValue;
         private ISession _session;
-        private int _receivedSize = 0;
 
         public void Dispose()
         {
@@ -39,17 +38,21 @@ namespace EchoClient.Serializer
 
         public Task OnReceivedAsync(ISession session, ArrayQueue<byte> buffer)
         {
-            var count = buffer.Count;
-            _receivedSize += count;
-            buffer.Advance(count);
-
-            while (_receivedSize >= Consts.Message.Length)
+            while (buffer.Count >= Consts.Message.Length)
             {
-                _ = session.SendAsync(Consts.Message);
-
-                _receivedSize -= Consts.Message.Length;
+                if (!buffer.TrySlice(out ArraySegment<byte> segment, Consts.Message.Length))
+                {
+                    break;
+                }
+                buffer.Advance(Consts.Message.Length);
+                var result = session.SendAsync(segment);
+                if (result != SendResult.Success)
+                {
+                    LogHelper.Error($"{result}");
+                    continue;
+                }
+                _totalBytes += Consts.Message.Length;
             }
-            _totalBytes += count;
             return Task.CompletedTask;
         }
     }

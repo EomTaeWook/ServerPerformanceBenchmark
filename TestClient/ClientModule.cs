@@ -1,6 +1,5 @@
 ﻿using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
-using EchoClient.Extensions;
 using EchoClient.Handler;
 
 namespace EchoClient
@@ -23,7 +22,7 @@ namespace EchoClient
             for (int i = 0; i < count; i++)
             {
                 //Send(message);
-                _ = _session.SendAsync(message);
+                _session.SendAsync(message);
             }
         }
 

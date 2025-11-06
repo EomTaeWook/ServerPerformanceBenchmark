@@ -9,17 +9,18 @@
 - Message size: 32
 - Seconds to benchmarking: 10
 
-- Errors: 0
-- Total Time: 10.003 seconds
-- Total Client: 1
-- Total Data: 1.41 GiB
-- Total Message: 47,256,766
-- Data Throughput: 144.18 MiB/s
-- Message Throughput: 4,724,351 msg/s
+[Monitor]
+Total Time: 10.003 seconds
+Total Client: 1
+Total Bytes: 3,384,353,024
+Total Data: 3.15 GiB
+Total Message: 105,761,032
+Data Throughput: 322.65 MiB/s
+Message Throughput: 10,572,569 msg/s
 
 ---
 
-![TopPerformance](Image/Dignus_Performance_47256766msg_1.41GiB.png)
+![TopPerformance](Image/Dignus_Performance_10572569msg_3.15GiB.png)
 
 ---
 

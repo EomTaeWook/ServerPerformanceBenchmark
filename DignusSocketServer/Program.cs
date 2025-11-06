@@ -28,10 +28,10 @@ namespace DignusEchoServer
         }
         static SessionSetup EchoSetupFactory()
         {
-            EchoSerializer echoSerializer = new();
+            EchoPacketHandler echoPacketHandler = new();
             return new SessionSetup(
-                    echoSerializer,
-                    echoSerializer,
+                    echoPacketHandler,
+                    echoPacketHandler,
                     []);
         }
         static SessionSetup PacketHandlerSetupFactory()
