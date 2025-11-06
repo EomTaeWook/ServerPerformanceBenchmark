@@ -10,13 +10,13 @@
 - Seconds to benchmarking: 10
 
 [Monitor]
-Total Time: 10.003 seconds
-Total Client: 1
-Total Bytes: 3,384,353,024
-Total Data: 3.15 GiB
-Total Message: 105,761,032
-Data Throughput: 322.65 MiB/s
-Message Throughput: 10,572,569 msg/s
+- Total Time: 10.003 seconds
+- Total Client: 1
+- Total Bytes: 3,384,353,024
+- Total Data: 3.15 GiB
+- Total Message: 105,761,032
+- Data Throughput: 322.65 MiB/s
+- Message Throughput: 10,572,569 msg/s
 
 ---
 
