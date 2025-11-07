@@ -26,7 +26,7 @@
 ---
 ## Installation
 
-[dotnet add package Dignus.Socket](https://www.nuget.org/packages/Dignus.Socket)
+https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
