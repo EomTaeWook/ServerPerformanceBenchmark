@@ -1,5 +1,6 @@
 # 📈 DignusSocketServer 
 
+
 ## 🔥 Performance Benchmark
 
 - Server address: 127.0.0.1
@@ -21,6 +22,11 @@
 ---
 
 ![TopPerformance](Image/Dignus_Performance_10572569msg_3.15GiB.png)
+
+---
+## Installation
+
+[dotnet add package Dignus.Socket](https://www.nuget.org/packages/Dignus.Socket)
 
 ---
 
