@@ -44,7 +44,7 @@ namespace EchoClient.Serializer
                 {
                     break;
                 }
-                buffer.Advance(Consts.Message.Length);
+                buffer.Advance(segment.Count);
                 var result = session.SendAsync(segment);
                 if (result != SendResult.Success)
                 {
