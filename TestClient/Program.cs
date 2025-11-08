@@ -34,16 +34,14 @@ namespace EchoClient
             var clients = new List<ClientModule>();
             LogHelper.Info($"start");
 
-            ThreadPool.GetMinThreads(out int workerThreads, out int ioThreads);
-            ThreadPool.SetMinThreads(workerThreads, ioThreads + 100);
+            ThreadPool.SetMinThreads(1, 1);
 
-            Parallel.For(0, 1, (i) =>
+            var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
+
+            sessionConfiguration.SocketOption.SendBufferSize = 65536;
+            sessionConfiguration.SocketOption.MaxPendingSendBytes = int.MaxValue;
+
             {
-                var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
-
-                sessionConfiguration.SocketOption.SendBufferSize = 65536;
-                sessionConfiguration.SocketOption.MaxPendingSendBytes = int.MaxValue;
-
                 var client = new ClientModule(sessionConfiguration);
 
                 try
@@ -56,15 +54,19 @@ namespace EchoClient
                 {
                     LogHelper.Error(ex);
                 }
-            });
+            }
 
             Monitor.Instance.Start();
             Task.Delay(10000).GetAwaiter().GetResult();
-            foreach (var client in clients)
+
             {
-                client.Close();
+                foreach (var client in clients)
+                {
+                    client.Close();
+                }
+                Monitor.Instance.PrintEcho("DignusSocketServer");
             }
-            Monitor.Instance.PrintEcho("DignusSocketServer");
+
         }
 
         private static void ServerBechmark()

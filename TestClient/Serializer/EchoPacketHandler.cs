@@ -46,7 +46,7 @@ namespace EchoClient.Serializer
                 }
                 buffer.Advance(segment.Count);
                 var result = session.SendAsync(segment);
-                if (result != SendResult.Success)
+                if (result != SendResult.Success && result == SendResult.Disposed)
                 {
                     LogHelper.Error($"{result}");
                     continue;
