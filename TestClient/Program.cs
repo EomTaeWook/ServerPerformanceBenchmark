@@ -64,7 +64,7 @@ namespace EchoClient
                 {
                     client.Close();
                 }
-                Monitor.Instance.PrintEcho("DignusSocketServer");
+                Monitor.Instance.PrintEcho(ServerName);
             }
 
         }
@@ -101,8 +101,11 @@ namespace EchoClient
             {
                 client.Close();
             }
-            Monitor.Instance.Print("DignusSocketServer");
+            Monitor.Instance.Print(ServerName);
         }
+
+        private const string ServerName = "DignusSocketServer";
+
         static void Main(string[] args)
         {
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
@@ -111,8 +114,8 @@ namespace EchoClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-            SingleBechmark();
-            //ServerBechmark();
+            //SingleBechmark();
+            ServerBechmark();
 
             Console.ReadLine();
         }

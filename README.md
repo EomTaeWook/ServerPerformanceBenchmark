@@ -61,8 +61,8 @@ https://www.nuget.org/packages/Dignus.Sockets
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,358,117 | 5,426,823 | 3,191,922 |
-| Max RTT (ms) | 22.02 | 67.61 | 11.72 |
+| Total Received | 6,735,665 | 5,426,823 | 3,191,922 |
+| Max RTT (ms) | 63.75 | 67.61 | 11.72 |
 | Min RTT (ms) | 0.00 | 0.00 | 0.00 |
 
 ---
@@ -72,8 +72,8 @@ https://www.nuget.org/packages/Dignus.Sockets
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,607,902 | 5,836,706 | 3,223,877 |
-| Max RTT (ms) | 14.99 | 77.93 | 11.17 |
+| Total Received | 6,921,356 | 5,836,706 | 3,223,877 |
+| Max RTT (ms) | 23.55 | 77.93 | 11.17 |
 | Min RTT (ms) | 0.00 | 0.00 | 0.01 |
 
 ---
@@ -83,8 +83,8 @@ https://www.nuget.org/packages/Dignus.Sockets
 | 항목 | DignusSocketServer (초기) | DignusSocketServer (웜업 후) | DotNetty (초기) | DotNetty (웜업 후) | SuperSocket 2.0 (초기) | SuperSocket 2.0 (웜업 후) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 6,358,117 | 6,607,902 | 5,426,823 | 5,836,706 | 3,191,922 | 3,223,877 |
-| Max RTT (ms) | 22.02 | 14.99 | 67.61 | 77.93 | 11.72 | 11.17 |
+| Total Received | 6,735,665 | 6,921,356 | 5,426,823 | 5,836,706 | 3,191,922 | 3,223,877 |
+| Max RTT (ms) | 63.75 | 23.55 | 67.61 | 77.93 | 11.72 | 11.17 |
 | Min RTT (ms) | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.01 |
 
 ---
@@ -149,8 +149,8 @@ It is designed to be lightweight, efficient, and easily extensible.
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,358,117 | 5,426,823 | 3,191,922 |
-| Max RTT (ms) | 22.02 | 67.61 | 11.72 |
+| Total Received | 6,735,665 | 5,426,823 | 3,191,922 |
+| Max RTT (ms) | 63.75 | 67.61 | 11.72 |
 | Min RTT (ms) | 0.00 | 0.00 | 0.00 |
 
 ---
@@ -160,8 +160,8 @@ It is designed to be lightweight, efficient, and easily extensible.
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 |
-| Total Received | 6,607,902 | 5,836,706 | 3,223,877 |
-| Max RTT (ms) | 14.99 | 77.93 | 11.17 |
+| Total Received | 6,921,356 | 5,836,706 | 3,223,877 |
+| Max RTT (ms) | 23.55 | 77.93 | 11.17 |
 | Min RTT (ms) | 0.00 | 0.00 | 0.01 |
 
 ---
@@ -171,8 +171,8 @@ It is designed to be lightweight, efficient, and easily extensible.
 | Item | DignusSocketServer (Cold) | DignusSocketServer (Warm-up) | DotNetty (Cold) | DotNetty (Warm-up) | SuperSocket 2.0 (Cold) | SuperSocket 2.0 (Warm-up) |
 |:---|:---|:---|:---|:---|:---|:---|
 | Total Clients | 5000 | 5000 | 5000 | 5000 | 5000 | 5000 |
-| Total Received | 6,358,117 | 6,607,902 | 5,426,823 | 5,836,706 | 3,191,922 | 3,223,877 |
-| Max RTT (ms) | 22.02 | 14.99 | 67.61 | 77.93 | 11.72 | 11.17 |
+| Total Received | 6,735,665 | 6,921,356 | 5,426,823 | 5,836,706 | 3,191,922 | 3,223,877 |
+| Max RTT (ms) | 63.75 | 23.55 | 67.61 | 77.93 | 11.72 | 11.17 |
 | Min RTT (ms) | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.01 |
 
 # 🖼️ Test Result Captures (Cold Start)
