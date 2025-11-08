@@ -9,6 +9,7 @@
 - Working messages: 1000
 - Message size: 32
 - Seconds to benchmarking: 10
+- Client Threads: 1
 
 [Monitor]
 - Total Time: 10.003 seconds
