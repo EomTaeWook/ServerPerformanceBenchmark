@@ -114,8 +114,10 @@ namespace EchoClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
-            //SingleBechmark();
-            ServerBechmark();
+            //EchoTest
+            SingleBechmark();
+            //Json Test
+            //ServerBechmark();
 
             Console.ReadLine();
         }

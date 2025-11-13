@@ -18,7 +18,11 @@ namespace DignusEchoServer
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
-            var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
+            //Echo
+            var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
+
+            //Json
+            //var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
             sessionInitializer.SocketOption.SendBufferSize = 65536;
             sessionInitializer.SocketOption.MaxPendingSendBytes = int.MaxValue;
             EchoServer echoServer = new(sessionInitializer);
