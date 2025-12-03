@@ -3,6 +3,8 @@
 
 ## 🔥 Performance Benchmark
 
+This benchmark represents round-trip throughput, covering the entire cycle of sending a request, server-side processing, and returning the response.
+
 - Server address: 127.0.0.1
 - Server port: 5000
 - Working clients: 1
