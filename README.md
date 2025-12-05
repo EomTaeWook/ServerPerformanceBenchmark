@@ -1,7 +1,7 @@
-# 📈 DignusSocketServer 
+# DignusSocketServer
+> High Performance C# TCP Socket Server Framework 
 
-
-## 🔥 Performance Benchmark
+## Performance Benchmark
 
 This benchmark represents round-trip throughput, covering the entire cycle of sending a request, server-side processing, and returning the response.
 
@@ -39,9 +39,9 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-# 서버별 성능 비교 (2024-04-27)
+# 서버별 성능 비교 (2025-04-27)
 
-## 🧪 테스트 조건
+## 테스트 조건
 
 - 클라이언트가 서버에 접속합니다.
 - 접속 이후, 각 클라이언트는 **30초 동안** 지속적으로 Echo 요청을 보냅니다.
@@ -51,14 +51,14 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-## 🚀 추가 참고사항 (초기 테스트 vs 웜업 후 테스트)
+## 추가 참고사항 (초기 테스트 vs 웜업 후 테스트)
 
 - 최초 테스트는 서버 부팅 직후 바로 진행되었으며, 최적화 전 상태였습니다.
 - 웜업 후 테스트는 서버를 재시작하지 않고 클라이언트만 재실행하여 진행되었습니다.
 
 ---
 
-# 🧊 서버 초기 상태 테스트 결과 (Cold Start)
+# 서버 초기 상태 테스트 결과 (Cold Start)
 
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
@@ -69,7 +69,7 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-# 🔥 웜업 이후 테스트 결과 (Warm-up)
+# 웜업 이후 테스트 결과 (Warm-up)
 
 | 항목 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
@@ -80,7 +80,7 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-# 📊 초기 vs 웜업 비교
+# 초기 vs 웜업 비교
 
 | 항목 | DignusSocketServer (초기) | DignusSocketServer (웜업 후) | DotNetty (초기) | DotNetty (웜업 후) | SuperSocket 2.0 (초기) | SuperSocket 2.0 (웜업 후) |
 |:---|:---|:---|:---|:---|:---|:---|
@@ -91,7 +91,7 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-# 🖼️ 테스트 결과 캡처 (초기)
+# 테스트 결과 캡처 (초기)
 
 | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---:|:---:|:---:|
@@ -99,7 +99,7 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-# 🖼️ 테스트 결과 캡처 (웜업 후)
+# 테스트 결과 캡처 (웜업 후)
 
 | DignusSocketServer (Warm-up) | DotNetty (Warm-up) | SuperSocket 2.0 (Warm-up) |
 |:---:|:---:|:---:|
@@ -107,11 +107,13 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
-## 📅 테스트 일자
-- 2024-04-27
+## 테스트 일자
+- 2025-04-27
 
 
-# 📈 DignusSocketServer
+# DignusSocketServer
+> High Performance C# TCP Socket Server Framework 
+
 A high-performance asynchronous socket server framework built with C#.
 Supports hundreds of thousands of concurrent connections and millions of messages through:
 
@@ -127,9 +129,9 @@ It is designed to be lightweight, efficient, and easily extensible.
 
 ---
 
-# Server Performance Comparison (2024-04-27)
+# Server Performance Comparison (2025-04-27)
 
-## 🧪 Test Conditions
+## Test Conditions
 
 - Clients connect to the server.
 - After connection, each client continuously sends Echo requests for **30 seconds**.
@@ -139,14 +141,14 @@ It is designed to be lightweight, efficient, and easily extensible.
 
 ---
 
-## 🚀 Additional Notes (Cold Start vs Warm-up Test)
+## Additional Notes (Cold Start vs Warm-up Test)
 
 - The initial test was conducted immediately after the server boot, before full optimization.
 - The warm-up test was conducted by re-running only the clients without restarting the server.
 
 ---
 
-# 🧊 Initial Server State Test Results (Cold Start)
+# Initial Server State Test Results (Cold Start)
 
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
@@ -157,7 +159,7 @@ It is designed to be lightweight, efficient, and easily extensible.
 
 ---
 
-# 🔥 Post-Warm-up Test Results
+# Post-Warm-up Test Results
 
 | Item | DignusSocketServer | DotNetty | SuperSocket 2.0 |
 |:---|:---|:---|:---|
@@ -168,7 +170,7 @@ It is designed to be lightweight, efficient, and easily extensible.
 
 ---
 
-# 📊 Cold Start vs Warm-up Comparison
+# Cold Start vs Warm-up Comparison
 
 | Item | DignusSocketServer (Cold) | DignusSocketServer (Warm-up) | DotNetty (Cold) | DotNetty (Warm-up) | SuperSocket 2.0 (Cold) | SuperSocket 2.0 (Warm-up) |
 |:---|:---|:---|:---|:---|:---|:---|
