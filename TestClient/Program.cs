@@ -34,8 +34,6 @@ namespace EchoClient
             var clients = new List<ClientModule>();
             LogHelper.Info($"start");
 
-            ThreadPool.SetMinThreads(1, 1);
-
             var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
 
             sessionConfiguration.SocketOption.SendBufferSize = 65536;
@@ -116,6 +114,8 @@ namespace EchoClient
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
             //EchoTest
             SingleBechmark();
+
+
             //Json Test
             //ServerBechmark();
 
