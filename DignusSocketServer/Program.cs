@@ -19,10 +19,10 @@ namespace DignusEchoServer
             LogBuilder.Build();
 
             //Echo
-            var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
+            //var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
 
             //Json
-            //var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
+            var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
             sessionInitializer.SocketOption.SendBufferSize = 65536;
             sessionInitializer.SocketOption.MaxPendingSendBytes = int.MaxValue;
             EchoServer echoServer = new(sessionInitializer);

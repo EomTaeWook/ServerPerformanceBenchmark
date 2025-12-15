@@ -7,7 +7,7 @@ namespace DignusEchoServer
 {
     internal class EchoServer : ServerBase
     {
-        public EchoServer(SessionConfiguration sessionConfiguration) : base(sessionConfiguration, 100, 100)
+        public EchoServer(SessionConfiguration sessionConfiguration) : base(sessionConfiguration, 100)
         {
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<CSProtocol>();
         }

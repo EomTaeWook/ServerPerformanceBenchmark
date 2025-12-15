@@ -113,11 +113,11 @@ namespace EchoClient
 
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
             //EchoTest
-            SingleBechmark();
+            //SingleBechmark();
 
 
             //Json Test
-            //ServerBechmark();
+            ServerBechmark();
 
             Console.ReadLine();
         }
