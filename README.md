@@ -14,17 +14,17 @@ This benchmark represents round-trip throughput, covering the entire cycle of se
 - Client Threads: 1
 
 [Monitor]
-- Total Time: 10.003 seconds
+- Total Time: 10.007 seconds
 - Total Client: 1
-- Total Bytes: 3,384,353,024
-- Total Data: 3.15 GiB
-- Total Message: 105,761,032
-- Data Throughput: 322.65 MiB/s
-- Message Throughput: 10,572,569 msg/s
+- Total Bytes: 3,585,899,328
+- Total Data: 3.34 GiB
+- Total Message: 112,059,354
+- Data Throughput: 341.72 MiB/s
+- Message Throughput: 11,197,544 msg/s
 
 ---
 
-![TopPerformance](Image/Dignus_Performance_10572569msg_3.15GiB.png)
+![TopPerformance](Image/Dignus_Performance_11197544msg_3.34GiB.png)
 
 ---
 ## Installation
