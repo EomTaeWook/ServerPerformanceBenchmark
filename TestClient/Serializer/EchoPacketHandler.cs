@@ -2,11 +2,12 @@
 using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using Dignus.Sockets.Processing;
 using EchoClient.Packets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoPacketHandler() : IPacketHandler, IPacketSerializer, ISessionComponent
+    internal class EchoPacketHandler() : PacketProcessor, IPacketSerializer, ISessionComponent
     {
         private long _totalBytes = 0;
         private readonly double _maxRttMs = -1;
@@ -35,24 +36,26 @@ namespace EchoClient.Serializer
         {
             _session = session;
         }
-
-        public Task OnReceivedAsync(ISession session, ArrayQueue<byte> buffer)
+        protected override bool TakeReceivedPacket(ISession session, ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
-            while (buffer.Count >= Consts.Message.Length)
+            consumedBytes = 0;
+            if (buffer.TrySlice(out packet, Consts.Message.Length) == false)
             {
-                if (!buffer.TrySlice(out ArraySegment<byte> segment, Consts.Message.Length))
-                {
-                    break;
-                }
-                buffer.Advance(segment.Count);
-                var result = session.SendAsync(segment);
-                if (result != SendResult.Success && result != SendResult.Disposed)
-                {
-                    LogHelper.Error($"{result}");
-                    continue;
-                }
-                _totalBytes += Consts.Message.Length;
+                return false;
             }
+            consumedBytes = Consts.Message.Length;
+            return true;
+        }
+
+        protected override Task ProcessPacketAsync(ISession session, ArraySegment<byte> packet)
+        {
+            var result = session.SendAsync(packet);
+            if (result != SendResult.Success && result != SendResult.Disposed)
+            {
+                LogHelper.Error($"{result}");
+            }
+            _totalBytes += Consts.Message.Length;
+
             return Task.CompletedTask;
         }
     }

@@ -4,9 +4,9 @@ using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using DignusEchoServer.Packets;
 
-namespace DignusEchoServer.Serializer
+namespace DignusEchoServer.Processor
 {
-    internal class EchoPacketHandler() : IPacketHandler, IPacketSerializer
+    internal class EchoPacketHandler() : Dignus.Sockets.Processing.PacketProcessor, IPacketSerializer
     {
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
@@ -16,20 +16,26 @@ namespace DignusEchoServer.Serializer
             }
             return sendPacket.Body;
         }
-        public Task OnReceivedAsync(ISession session, ArrayQueue<byte> buffer)
+        protected override Task ProcessPacketAsync(ISession session, ArraySegment<byte> packet)
         {
-            var count = buffer.Count;
-            if (!buffer.TrySlice(out var packet, count))
-            {
-                return Task.CompletedTask;
-            }
-            buffer.Advance(count);
             var result = session.Send(packet);
             if (result != SendResult.Success)
             {
                 LogHelper.Error($"{result}");
             }
             return Task.CompletedTask;
+        }
+
+        protected override bool TakeReceivedPacket(ISession session, ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
+        {
+            var count = buffer.Count;
+            consumedBytes = 0;
+            if (!buffer.TrySlice(out packet, count))
+            {
+                return false;
+            }
+            consumedBytes = count;
+            return true;
         }
     }
 }

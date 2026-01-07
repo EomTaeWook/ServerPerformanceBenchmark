@@ -1,7 +1,7 @@
 ﻿using Dignus.Log;
 using Dignus.Sockets;
 using DignusEchoServer.Handler;
-using DignusEchoServer.Serializer;
+using DignusEchoServer.Processor;
 
 namespace DignusEchoServer
 {
@@ -19,10 +19,10 @@ namespace DignusEchoServer
             LogBuilder.Build();
 
             //Echo
-            //var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
+            var sessionInitializer = new SessionConfiguration(EchoSetupFactory);
 
             //Json
-            var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
+            //var sessionInitializer = new SessionConfiguration(PacketHandlerSetupFactory);
             sessionInitializer.SocketOption.SendBufferSize = 65536;
             sessionInitializer.SocketOption.MaxPendingSendBytes = int.MaxValue;
             EchoServer echoServer = new(sessionInitializer);
@@ -42,11 +42,11 @@ namespace DignusEchoServer
         {
             EchoHandler handler = new();
 
-            PacketProcessor packetSerializer = new(handler);
+            PacketProcessor packetProcessor = new(handler);
 
             return new SessionSetup(
-                    packetSerializer,
-                    packetSerializer,
+                    packetProcessor,
+                    packetProcessor,
                     [handler]);
         }
     }

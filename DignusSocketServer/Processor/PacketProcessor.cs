@@ -6,7 +6,7 @@ using DignusEchoServer.Handler;
 using DignusEchoServer.Packets;
 using System.Text;
 
-namespace DignusEchoServer.Serializer
+namespace DignusEchoServer.Processor
 {
     internal class PacketProcessor(EchoHandler echoHandler) : PacketHandlerBase, IPacketSerializer
     {
@@ -40,12 +40,10 @@ namespace DignusEchoServer.Serializer
         {
             packet = null;
             consumedBytes = 0;
-            if (buffer.Count < SizeToInt)
+            if(buffer.TrySlice(out var headerBytes, SizeToInt) == false)
             {
                 return false;
             }
-
-            var headerBytes = buffer.Peek(SizeToInt);
 
             var bodySize = BitConverter.ToInt32(headerBytes);
 
