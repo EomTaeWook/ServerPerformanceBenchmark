@@ -1,10 +1,18 @@
 # DignusSocketServer
 > High Performance C# TCP Socket Server Framework 
 
-## Performance Benchmark
+## Installation
 
-This benchmark represents round-trip throughput, covering the entire cycle of sending a request, server-side processing, and returning the response.
+https://www.nuget.org/packages/Dignus.Sockets
 
+---
+
+## Performance Benchmark (TCP)
+
+This benchmark measures round-trip throughput over a plain TCP connection.
+covering the full cycle of request send → server-side processing → response return.
+
+[Test Conditions]
 - Server address: 127.0.0.1
 - Server port: 5000
 - Working clients: 1
@@ -26,11 +34,33 @@ This benchmark represents round-trip throughput, covering the entire cycle of se
 ![TopPerformance](Image/Dignus_Performance_11197544msg_3.34GiB.png)
 
 ---
-## Installation
+## Performance Benchmark (TLS)
 
-https://www.nuget.org/packages/Dignus.Sockets
+This benchmark measures TLS-encrypted TCP round-trip throughput,
+including encryption/decryption overhead during send/receive and response processing.
+
+[Test Conditions]
+- Server address: 127.0.0.1
+- Server port: 5000
+- Working clients: 1
+- Working messages: 1000
+- Message size: 32
+- Seconds to benchmarking: 10
+
+[Monitor]
+- Total time: 10.002 seconds
+- Total Client: 1
+- Total data: 2.62 GiB
+- Total messages: 87,791,887
+- Data throughput: 267.87 MiB/s
+- Message latency: 0.000 ms
+- Message throughput: 8,777,457 msg/s
 
 ---
+
+![TopPerformance](Image/Dignus_Tls_Performance_8777457msg_2.62GiB)
+---
+
 
 고성능 C# 비동기 소켓 서버 프레임워크입니다.
 세션 풀링, 프레이밍 처리, 직렬화/역직렬화 구조 등을 통해 수십만 동시 접속과 수백만 메시지 처리 성능을 지원합니다.
