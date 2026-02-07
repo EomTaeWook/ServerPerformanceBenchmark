@@ -58,7 +58,7 @@ including encryption/decryption overhead during send/receive and response proces
 
 ---
 
-![TopPerformance](Image/Dignus_Tls_Performance_8777457msg_2.62GiB)
+![TopPerformance](Image/Dignus_Tls_Performance_8777457msg_2.62GiB.png)
 ---
 
 
