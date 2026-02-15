@@ -48,17 +48,15 @@ including encryption/decryption overhead during send/receive and response proces
 - Seconds to benchmarking: 10
 
 [Monitor]
-- Total time: 10.002 seconds
-- Total Client: 1
-- Total data: 2.62 GiB
-- Total messages: 87,791,887
-- Data throughput: 267.87 MiB/s
+- Total time: 10.008 s
+- Total data: 2.78 GiB
+- Total messages: 93,193,319
+- Data throughput: 284.17 MiB/s
 - Message latency: 0.000 ms
-- Message throughput: 8,777,457 msg/s
-
+- Message throughput: 9,311,679 msg/s
 ---
 
-![TopPerformance](Image/Dignus_Tls_Performance_8777457msg_2.62GiB.png)
+![TopPerformance](Image/Dignus_Tls_Performance_9311679msg_2.78GiB.png)
 ---
 
 
