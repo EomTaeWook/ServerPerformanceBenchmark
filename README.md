@@ -7,6 +7,15 @@ https://www.nuget.org/packages/Dignus.Sockets
 
 ---
 
+### Benchmark Environment
+- CPU: Intel Core i5-12400F (12th Gen)
+- Cores / Threads: 6 / 12
+- Max Turbo Frequency: 4.40 GHz
+- Memory: 32 GB
+- Architecture: x64
+- Operating System: Windows 64-bit
+- Runtime: .NET 8 (Release x64)
+
 ## Performance Benchmark (TCP)
 
 This benchmark measures round-trip throughput over a plain TCP connection.

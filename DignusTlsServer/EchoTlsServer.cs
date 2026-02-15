@@ -1,4 +1,5 @@
-﻿using Dignus.Sockets;
+﻿using Dignus.Log;
+using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using Dignus.Sockets.Tls;
 
@@ -11,17 +12,22 @@ namespace DignusTlsServer
         }
         protected override void OnAccepted(ISession session)
         {
-            //LogHelper.Info($"[server] session accepted - {session.Id}");
+            LogHelper.Info($"[server] session accepted - {session.Id}");
         }
 
         protected override void OnDisconnected(ISession session)
         {
-            //LogHelper.Info($"[server] session disconnected - {session.Id}");
+            LogHelper.Info($"[server] session disconnected - {session.Id}");
         }
 
         protected override void OnHandshaking(ISession session)
         {
-            
+            LogHelper.Info($"[server] session disconnected - {session.Id}");
+        }
+        protected override void OnHandshakeFailed(ISession session, Exception ex)
+        {
+            base.OnHandshakeFailed(session, ex);
+            LogHelper.Error($"[server] session disconnected - {session.Id}");
         }
     }
 }
