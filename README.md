@@ -66,8 +66,34 @@ including encryption/decryption overhead during send/receive and response proces
 ---
 
 ![TopPerformance](Image/Dignus_Tls_Performance_9311679msg_2.78GiB.png)
+
 ---
 
+## Performance Benchmark (Udp)
+
+This benchmark measures UDP round-trip echo throughput.
+
+[Test Conditions]
+- Server address: 127.0.0.1
+- Server port: 5000
+- Working clients: 1
+- Working messages: 1000
+- Message size: 32
+- Seconds to benchmarking: 10
+
+[Monitor]
+- Total Time: 10.007 seconds
+- Total Client: 1
+- Total Bytes: 38,692,800
+- Total Data: 0.04 GiB
+- Total Message: 1,209,150
+- Data Throughput: 3.69 MiB/s
+- Message Throughput: 120,831 msg/s
+---
+
+![TopPerformance](Image/Dignus_Udp_Performance_120831msg_3.69MiB.png)
+
+---
 
 고성능 C# 비동기 소켓 서버 프레임워크입니다.
 세션 풀링, 프레이밍 처리, 직렬화/역직렬화 구조 등을 통해 수십만 동시 접속과 수백만 메시지 처리 성능을 지원합니다.
