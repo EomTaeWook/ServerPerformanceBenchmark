@@ -28,7 +28,7 @@ namespace DignusTlsServer
             var pfxPath = Path.Combine(AppContext.BaseDirectory, "server.pfx");
             X509Certificate2 serverCert = X509CertificateLoader.LoadPkcs12FromFile(pfxPath, "1234");
 
-            var tlsOption = new TlsServerOptions(serverCert);
+            var tlsOption = new TlsServerOptions(serverCert, initialSessionPoolSize: 100);
             EchoTlsServer echoServer = new(sessionInitializer, tlsOption);
             echoServer.Start(5000);
             LogHelper.Info($"start server... port : {5000}");
@@ -36,7 +36,7 @@ namespace DignusTlsServer
         }
         static SessionSetup EchoSetupFactory()
         {
-            EchoPacketHandler echoPacketHandler = new();
+            EchoPacketProcessor echoPacketHandler = new();
             return new SessionSetup(
                     echoPacketHandler,
                     echoPacketHandler,

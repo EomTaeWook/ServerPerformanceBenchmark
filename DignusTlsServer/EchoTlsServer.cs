@@ -7,7 +7,7 @@ namespace DignusTlsServer
 {
     internal class EchoTlsServer : TlsServerBase
     {
-        public EchoTlsServer(SessionConfiguration sessionConfiguration, TlsServerOptions tlsServerOptions) : base(sessionConfiguration, tlsServerOptions, 100)
+        public EchoTlsServer(SessionConfiguration sessionConfiguration, TlsServerOptions tlsServerOptions) : base(sessionConfiguration, tlsServerOptions)
         {
         }
         protected override void OnAccepted(ISession session)
