@@ -15,10 +15,11 @@ namespace DignusEchoServer.Handler
         }
 
         [ProtocolName("EchoMessage")]
-        public void Process(EchoMessage echo)
+        public Task Process(EchoMessage echo)
         {
             var body = JsonSerializer.Serialize(echo);
             _session.SendAsync(new Packet((int)SCProtocol.EchoMessageResponse, body));
+            return Task.CompletedTask;
         }
 
         public void OtherMessage(OtherMessage otherMessage)

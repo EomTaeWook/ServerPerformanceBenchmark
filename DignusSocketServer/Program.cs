@@ -32,7 +32,7 @@ namespace DignusEchoServer
         }
         static SessionSetup EchoSetupFactory()
         {
-            EchoPacketHandler echoPacketHandler = new();
+            EchoProcessor echoPacketHandler = new();
             return new SessionSetup(
                     echoPacketHandler,
                     echoPacketHandler,
