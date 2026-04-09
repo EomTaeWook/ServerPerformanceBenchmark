@@ -21,12 +21,12 @@ namespace EchoClient
         }
         static SessionSetup EchoSetupFactory()
         {
-            EchoPacketHandler echoSerializer = new();
+            EchoPacketProcessor echoPacketProcessor = new();
 
             return new SessionSetup(
-                    echoSerializer,
-                    echoSerializer,
-                    [echoSerializer]);
+                    echoPacketProcessor,
+                    echoPacketProcessor,
+                    []);
         }
 
         private static void SingleBechmark()
@@ -69,6 +69,7 @@ namespace EchoClient
 
         private static void ServerBechmark()
         {
+            ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
             var clients = new List<ClientModule>();
 
             for (var i = 0; i < 5000; ++i)
@@ -111,13 +112,13 @@ namespace EchoClient
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
+
             //EchoTest
-            SingleBechmark();
+            //SingleBechmark();
 
 
             //Json Test
-            //ServerBechmark();
+            ServerBechmark();
 
             Console.ReadLine();
         }

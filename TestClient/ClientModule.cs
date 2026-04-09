@@ -4,7 +4,7 @@ using EchoClient.Handler;
 
 namespace EchoClient
 {
-    internal class ClientModule : ClientBase
+    internal class ClientModule : TcpClientBase
     {
         private bool _isConnect = false;
         private ISession _session;

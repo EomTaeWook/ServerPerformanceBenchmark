@@ -30,17 +30,17 @@ covering the full cycle of request send → server-side processing → response 
 - Seconds to benchmarking: 10
 
 [Monitor]
-- Total Time: 10.007 seconds
+- Total Time: 10.004 seconds
 - Total Client: 1
-- Total Bytes: 3,585,899,328
-- Total Data: 3.34 GiB
-- Total Message: 112,059,354
-- Data Throughput: 341.72 MiB/s
-- Message Throughput: 11,197,544 msg/s
+- Total Bytes: 4,381,814,912
+- Total Data: 4.08 GiB
+- Total Message: 136,931,716
+- Data Throughput: 417.73 MiB/s
+- Message Throughput: 13,688,031 msg/s
 
 ---
 
-![TopPerformance](Image/Dignus_Performance_11197544msg_3.34GiB.png)
+![TopPerformance](Image/Dignus_Performance_13688031msg_4.08GiB.png)
 
 ---
 ## Performance Benchmark (TLS)
@@ -57,15 +57,15 @@ including encryption/decryption overhead during send/receive and response proces
 - Seconds to benchmarking: 10
 
 [Monitor]
-- Total time: 10.008 s
-- Total data: 2.78 GiB
-- Total messages: 93,193,319
-- Data throughput: 284.17 MiB/s
+- Total time: 10.001 s
+- Total data: 3.29 GiB
+- Total messages: 110,421,469
+- Data throughput: 336.96 MiB/s
 - Message latency: 0.000 ms
-- Message throughput: 9,311,679 msg/s
+- Message throughput: 11,041,359 msg/s
 ---
 
-![TopPerformance](Image/Dignus_Tls_Performance_9311679msg_2.78GiB.png)
+![TopPerformance](Image/Dignus_Tls_Performance_11041359msg_3.29GiB.png)
 
 ---
 

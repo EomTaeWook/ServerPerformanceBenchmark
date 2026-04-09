@@ -7,13 +7,12 @@ using EchoClient.Packets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoPacketHandler() : PacketProcessor, IPacketSerializer, ISessionComponent
+    internal class EchoPacketProcessor() : PacketProcessor, IPacketSerializer
     {
         private long _totalBytes = 0;
         private readonly double _maxRttMs = -1;
         private readonly double _minRttMs = double.MaxValue;
         private readonly DateTime _lastSendTime = DateTime.MinValue;
-        private ISession _session;
 
         public void Dispose()
         {
@@ -32,10 +31,6 @@ namespace EchoClient.Serializer
             return sendPacket.Body;
         }
 
-        public void SetSession(ISession session)
-        {
-            _session = session;
-        }
         protected override bool TakeReceivedPacket(ISession session, ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             consumedBytes = 0;

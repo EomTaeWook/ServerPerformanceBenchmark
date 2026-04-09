@@ -1,13 +1,14 @@
 ﻿using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using Dignus.Sockets.Tcp;
 using DignusEchoServer.Handler;
 using DignusEchoServer.Protocol;
 
 namespace DignusEchoServer
 {
-    internal class EchoServer : ServerBase
+    internal class EchoServer : TcpServerBase
     {
-        public EchoServer(SessionConfiguration sessionConfiguration) : base(sessionConfiguration, 100)
+        public EchoServer(SessionConfiguration sessionConfiguration) : base(sessionConfiguration)
         {
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<CSProtocol>();
         }

@@ -40,11 +40,6 @@ namespace EchoClient.Handler
             Interlocked.Increment(ref _receivedCount);
         }
 
-        public void OtherMessageResponse(OtherMessageResponse otherMeesage)
-        {
-            LogHelper.Info($"process other message");
-        }
-
         public void SendEcho(string message)
         {
             var session = _session;
@@ -61,6 +56,7 @@ namespace EchoClient.Handler
             _lastSendTime = DateTime.UtcNow;
             session.SendAsync(new Packet((int)CSProtocol.EchoMessage, body));
         }
+
         public void SetSession(ISession session)
         {
             _session = session;

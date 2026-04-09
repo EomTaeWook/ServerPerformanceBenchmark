@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DignusEchoServer.Processor
 {
-    internal class PacketProcessor(EchoHandler echoHandler) : PacketHandlerBase, IPacketSerializer
+    internal class PacketProcessor(EchoHandler echoHandler) : SessionlessPacketProcessor, IPacketSerializer
     {
         private const int HeaderSize = sizeof(int) * 2;
         private const int SizeToInt = sizeof(int);

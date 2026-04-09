@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EchoClient.Serializer
 {
-    internal class PacketSerializer(EchoHandler echoHandler) : PacketHandlerBase, IPacketSerializer
+    internal class PacketSerializer(EchoHandler echoHandler) : SessionlessPacketProcessor, IPacketSerializer
     {
         private const int SizeToInt = sizeof(int);
         private const int HeaderSize = sizeof(int) * 2;
@@ -31,7 +31,7 @@ namespace EchoClient.Serializer
         public async override Task ProcessPacketAsync(ArraySegment<byte> packet)
         {
             var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
-            var size = packet.Array.Length - packet.Offset - SizeToInt;
+            var size = packet.Count - SizeToInt;
             var bodyString = Encoding.UTF8.GetString(packet.Array, packet.Offset + SizeToInt, size);
 
             await ProtocolHandlerMapper<EchoHandler, string>.InvokeHandlerAsync(echoHandler, protocol, bodyString);
