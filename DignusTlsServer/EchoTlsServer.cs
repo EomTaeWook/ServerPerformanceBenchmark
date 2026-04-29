@@ -12,12 +12,12 @@ namespace DignusTlsServer
         }
         protected override void OnAccepted(ISession session)
         {
-            //LogHelper.Info($"[server] session accepted - {session.Id}");
+            LogHelper.Info($"[server] session accepted - {session.Id}");
         }
 
         protected override void OnDisconnected(ISession session)
         {
-            //LogHelper.Info($"[server] session disconnected - {session.Id}");
+            LogHelper.Info($"[server] session disconnected - {session.Id}");
         }
 
         protected override void OnHandshaking(ISession session)

@@ -14,7 +14,7 @@ namespace DignusTlsClient
             LogBuilder.Build();
             
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            Bechmark(1);
+            Bechmark(10000);
             Console.ReadLine();
 
         }
@@ -34,7 +34,7 @@ namespace DignusTlsClient
 
                 X509Certificate2 clientCert = X509CertificateLoader.LoadPkcs12FromFile(pfxPath, "1234");
 
-                var tlsOption = new TlsClientOptions("localhost", clientCert);
+                var tlsOption = new TlsClientOptions("localhost", remoteCertificateValidationCallback: (_, _, _, _) => { return true; });
 
                 for(int i=0; i< clientCount; ++i )
                 {
