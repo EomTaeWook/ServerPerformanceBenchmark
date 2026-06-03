@@ -62,19 +62,21 @@ namespace EchoClient
                 {
                     client.Close();
                 }
-                Monitor.Instance.PrintEcho(ServerName);
+                Monitor.Instance.PrintEcho("DignusSocketServer");
             }
 
         }
 
-        private static void ServerBechmark()
+        private static void ServerBechmark(string serverName, int clientCount, int durationSec)
         {
             ProtocolHandlerMapper<EchoHandler, string>.BindProtocol<SCProtocol>();
             var clients = new List<ClientModule>();
 
-            for (var i = 0; i < 5000; ++i)
+            for (var i = 0; i < clientCount; ++i)
             {
-                var client = new ClientModule(new SessionConfiguration(PakcetHandlerSetupFactory));
+                var sessionConfiguration = new SessionConfiguration(PakcetHandlerSetupFactory);
+                sessionConfiguration.SocketOption.NoDelay = true; // same client config for every server
+                var client = new ClientModule(sessionConfiguration);
 
                 try
                 {
@@ -94,16 +96,14 @@ namespace EchoClient
                 client.SendEcho("Hello Dignus Socket");
             });
 
-            Task.Delay(30000).GetAwaiter().GetResult();
+            Task.Delay(durationSec * 1000).GetAwaiter().GetResult();
 
             foreach (var client in clients)
             {
                 client.Close();
             }
-            Monitor.Instance.Print(ServerName);
+            Monitor.Instance.Print(serverName);
         }
-
-        private const string ServerName = "DignusSocketServer";
 
         static void Main(string[] args)
         {
@@ -112,15 +112,13 @@ namespace EchoClient
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            var serverName = args.Length > 0 ? args[0] : "Server";
+            var clientCount = 5000;
+            var durationSec = 15;
 
-            //EchoTest
-            //SingleBechmark();
+            ServerBechmark(serverName, clientCount, durationSec);
 
-
-            //Json Test
-            ServerBechmark();
-
-            Console.ReadLine();
+            Console.ReadKey();
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -1,10 +1,12 @@
-﻿using DotNetty.Transport.Bootstrapping;
+﻿using DotNetty.Buffers;
+using DotNetty.Codecs;
+using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using DotNettyServer.Handler;
 using System.Net;
 
-Console.WriteLine("Starting Echo Server...");
+Console.WriteLine("Starting Dotnetty Echo Server...");
 var bossGroup = new MultithreadEventLoopGroup();
 var workerGroup = new MultithreadEventLoopGroup();
 
@@ -16,9 +18,14 @@ try
         .Group(bossGroup, workerGroup)
         .Channel<TcpServerSocketChannel>()
         .Option(ChannelOption.SoBacklog, 200)
+        .ChildOption(ChannelOption.TcpNodelay, true)
         .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
         {
             IChannelPipeline pipeline = channel.Pipeline;
+            // Idiomatic framing: [len:int32 LE] header. length value counts bytes after the field
+            // (protocol + json). Deliver the full frame (initialBytesToStrip=0) so the handler reads
+            // size@0 / protocol@4 / body@8 from a guaranteed-complete frame.
+            pipeline.AddLast(new LengthFieldBasedFrameDecoder(ByteOrder.LittleEndian, int.MaxValue, 0, 4, 0, 0, true));
             pipeline.AddLast(new EchoServerHandler());
         }));
 
@@ -35,6 +42,7 @@ finally
     );
 }
 
+Console.ReadKey();
 
 int gen0 = GC.CollectionCount(0);
 int gen1 = GC.CollectionCount(1);

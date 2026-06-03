@@ -10,31 +10,23 @@ namespace DotNettyServer.Handler
     {
         public override void ChannelRead(IChannelHandlerContext ctx, object msg)
         {
+            // LengthFieldBasedFrameDecoder guarantees msg is exactly one complete frame
+            // starting at offset 0: [size:int32 LE][protocol:int32 LE][json].
             var buffer = (IByteBuffer)msg;
-            if (buffer.ReadableBytes < 4)
+            try
             {
-                ctx.FireChannelRead(msg);
-                return;
-            }
+                var bodySize = buffer.GetIntLE(0);
+                var protocol = buffer.GetIntLE(4);
+                var body = buffer.GetString(8, bodySize - 4, Encoding.UTF8);
 
-            var bodySize = buffer.GetIntLE(buffer.ReaderIndex);
-
-            if (buffer.ReadableBytes - 4 < bodySize)
-            {
-                ctx.FireChannelRead(msg);
-                return;
-            }
-            var protocol = buffer.GetIntLE(4);
-
-            var body = buffer.GetString(8, bodySize - 4, Encoding.UTF8);
-
-            buffer.Release();
-
-            switch (protocol)
-            {
-                case 0:
+                if (protocol == 0)
+                {
                     Process(ctx, Deserialize<EchoMessage>(body));
-                    break;
+                }
+            }
+            finally
+            {
+                buffer.Release();
             }
         }
 

@@ -56,7 +56,19 @@ namespace EchoClient.Handler
             _lastSendTime = DateTime.UtcNow;
             session.SendAsync(new Packet((int)CSProtocol.EchoMessage, body));
         }
+        public void SendEcho(EchoMessage echoMessage)
+        {
+            var session = _session;
+            if (session == null)
+            {
+                return;
+            }
 
+            var body = JsonSerializer.Serialize(echoMessage);
+
+            _lastSendTime = DateTime.UtcNow;
+            session.SendAsync(new Packet((int)CSProtocol.EchoMessage, body));
+        }
         public void SetSession(ISession session)
         {
             _session = session;
