@@ -18,7 +18,7 @@ namespace DignusTlsServer.Processor
         }
         protected override Task ProcessPacketAsync(ISession session, ArraySegment<byte> packet)
         {
-            var result = session.SendAsync(packet);
+            var result = session.Send(packet);
             if (result != SendResult.Success)
             {
                 LogHelper.Error($"{result}");
